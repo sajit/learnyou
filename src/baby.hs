@@ -20,3 +20,8 @@ evens = [x*2 | x <- [1..10]]
 conditionalEvens = [x*2 | x <- [1..10],x*2 <=10]
 --How about if we wanted all numbers from 50 to 100 whose remainder when divided with the number 7 is 3?
 meh = [x | x <- [50..100], x `mod` 7 == 3]
+
+-- :t gives you the type of a variable and :: indicates typeof
+isEven x 
+   | x `mod` 2 == 0 = "even"
+   | otherwise = "odd"
