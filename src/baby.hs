@@ -39,4 +39,10 @@ mySum1 x y = x + y
 mySum2 x = mySum1 1 x
 mySum3 = mySum1 1
 
-tupleSum (x1,y1) (x2,y2) = (x1+x2,y1+y2)  
+tupleSum (x1,y1) (x2,y2) = (x1+x2,y1+y2)
+
+
+whereis n 
+  | charname == "Waldo" = "found"
+  | otherwise = "not found"
+  where charname = n  
