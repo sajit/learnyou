@@ -25,3 +25,18 @@ meh = [x | x <- [50..100], x `mod` 7 == 3]
 isEven x 
    | x `mod` 2 == 0 = "even"
    | otherwise = "odd"
+
+-- pattern matchin for functions
+luckyGiroo :: (Integral a) => a -> String
+luckyGiroo 1  = "positive"
+luckyGiroo 2  = "Twp"
+luckyGiroo 3 = "Three"
+luckyGiroo x  = "Dunno"
+
+-- currying of functions
+--mySum1 :: (Integer a ) => a -> a -> a
+mySum1 x y = x + y
+mySum2 x = mySum1 1 x
+mySum3 = mySum1 1
+
+tupleSum (x1,y1) (x2,y2) = (x1+x2,y1+y2)  
