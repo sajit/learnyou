@@ -46,3 +46,15 @@ whereis n
   | charname == "Waldo" = "found"
   | otherwise = "not found"
   where charname = n  
+
+
+
+maxValList [] =  error  "no max for empty list"
+maxValList [x] = x
+maxValList (x:xs) = max x  (maxValList xs)
+
+--replicate :: (Num i,Ord i) => i -> a -> [a]
+--replicate is a used function name..Rename it
+replcte n x 
+  | n <=0 = []
+  | otherwise = x:replcte (n-1) x
