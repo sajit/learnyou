@@ -55,6 +55,11 @@ maxValList (x:xs) = max x  (maxValList xs)
 
 --replicate :: (Num i,Ord i) => i -> a -> [a]
 --replicate is a used function name..Rename it
-replcte n x 
-  | n <=0 = []
-  | otherwise = x:replcte (n-1) x
+--replcte n x 
+--  | n <=0 = []
+--  | otherwise = x:replcte (n-1) x
+--Max With X, curried function
+maxWithX x  = max x
+--Max with 4 , curried function
+maxWith4 = max 4 
+ 
