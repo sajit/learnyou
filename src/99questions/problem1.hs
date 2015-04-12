@@ -12,9 +12,9 @@ sum_up [] sum = sum
 sum_up (x:xs) sum = sum_up xs (sum+x) 
 
 --guarded example
-rec_sum_up a_list sum = if(length(a_list)==0) 
-							then return sum 
-							else return rec_sum_up tail a_list (sum + head a_list) 
+rec_sum_up sum a_list = if(length(a_list)==0) 
+							then sum 
+							else rec_sum_up((sum + head(a_list)) tail(a_list)) 
    
 foo al sum
     | length (al) == 0 = return sum
