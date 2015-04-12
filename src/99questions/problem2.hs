@@ -14,3 +14,7 @@ kth_el aList  k = if(length(aList) < k) then Nothing else Just (aList !! (k-1))
 -- problem 4 
 -- Find the number of elements in a list
 num_elements aList = length(aList)
+
+recursive_kth :: [Integer] -> Integer -> Integer
+recursive_kth aList 0 = head(aList)
+recursive_kth aList k = recursive_kth (tail(aList) (k-1)) 
