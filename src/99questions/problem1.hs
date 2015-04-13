@@ -18,6 +18,6 @@ rec_sum_up a_list sum = if(length(a_list)==0)
 							else (rec_sum_up  (tail a_list) (sum + head a_list)) 
    
 --guarded example
---foo al sum
-  --  | length (al) == 0 = return sum
-  -- | otherwise = return foo tail (al) (sum + head (al))
+guarded_sum al
+   | (null al) = 0
+   | otherwise = (head al) + (guarded_sum (tail al)) 
