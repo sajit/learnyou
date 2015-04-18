@@ -19,3 +19,7 @@ recursive_kth :: [Integer] -> Integer -> Integer
 recursive_kth [] k = -1
 recursive_kth aList 0 = (head aList)
 recursive_kth aList k = recursive_kth  (tail aList) (k-1) 
+
+--reverse a list
+reverse_list [] = []
+reverse_list (x:xs) = reverse_list xs ++ [x]
