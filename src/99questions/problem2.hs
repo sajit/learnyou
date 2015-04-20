@@ -23,3 +23,21 @@ recursive_kth aList k = recursive_kth  (tail aList) (k-1)
 --reverse a list
 reverse_list [] = []
 reverse_list (x:xs) = reverse_list xs ++ [x]
+
+-- Find out whether a list is a palindrome.
+is_palindrome [] = True
+is_palindrome [x] = True
+is_palindrome (x:xs) = x == last xs && is_palindrome (init xs)
+
+--Flatten a nested list structure.
+-- define a data structure to accommodate nested lists since haskell lists are homogeneous
+data NestedList a = Elem a | List [NestedList a]
+--flatten
+
+--Problem 8 
+--(**) Eliminate consecutive duplicates of list elements.
+distinct_neighbors [] = []
+distinct_neighbors [x] = [x]
+distinct_neighbors (x:xs) 
+	| x == head(xs) = distinct_neighbors(xs)
+	| otherwise = x : distinct_neighbors(xs)
