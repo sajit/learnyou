@@ -41,3 +41,12 @@ distinct_neighbors [x] = [x]
 distinct_neighbors (x:xs) 
 	| x == head(xs) = distinct_neighbors(xs)
 	| otherwise = x : distinct_neighbors(xs)
+
+-- Problem 9
+--(**) Pack consecutive duplicates of list elements into sublists. 
+--If a list contains repeated elements they should be placed in separate sublists.
+
+pack_up [] (prev,count) acc =  reverse (init ([prev | x <- [1..count]] : acc))
+pack_up (x:xs) (prev,count) acc 
+ | x == prev = pack_up xs (prev,count+1) acc
+ | otherwise = pack_up xs (x,1) ([prev | x <- [1..count]] : acc)
