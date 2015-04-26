@@ -50,3 +50,13 @@ pack_up [] (prev,count) acc =  reverse (init ([prev | x <- [1..count]] : acc))
 pack_up (x:xs) (prev,count) acc 
  | x == prev = pack_up xs (prev,count+1) acc
  | otherwise = pack_up xs (x,1) ([prev | x <- [1..count]] : acc)
+
+ --(*) Run-length encoding of a list. 
+ --Use the result of problem P09 to implement the so-called run-length encoding data compression method. 
+ --Consecutive duplicates of elements are encoded as lists (N E) where N is the number of duplicates of the element E.
+
+encode_me :: [[Integer]] ->[(Int,Integer)] -> [(Int,Integer)]
+encode_me [] acc = reverse acc
+encode_me (x:xs) acc =  encode_me xs ((length x,head x) : acc) 
+
+
