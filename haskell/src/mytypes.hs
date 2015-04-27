@@ -32,9 +32,16 @@ print_color Green = "pacha"
 print_color Blue = "neela"
 print_color Indigo = "koppu"
 print_color Violet = "arinjuda"
--- Not in scope: data constructor 
---print_color _ = "No Color"
 
+data Shape = Circle Float Float Float | Rectangle Float Float Float Float
+surface :: Shape -> Float
+surface (Circle _ _ r) = pi * r ^ 2  
+surface (Rectangle x1 y1 x2 y2) = (abs $ x2 - x1) * (abs $ y2 - y1) 
 
+circle1 = Circle 0 0 4
+area_circle1 = surface circle1
 
---data Point a            = Pt a a
+printMe :: Shape -> [Char]
+printMe (Circle x y r) = "A circle with center "
+
+--center_pt :: Shape -> (Float, Float)

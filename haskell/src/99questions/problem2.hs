@@ -64,6 +64,11 @@ encode_me (x:xs) acc =  encode_me xs ((length x,head x) : acc)
 
 --Modify the result of problem 10 in such a way that if an element has no duplicates
 -- it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists.
+data AnythingGoes = SingleMe Int | DoubleUs Int Int
+filter_encode_0 [] = []
+filter_encode_0 (x:xs)
+ | fst x == 1  = SingleMe (snd x)  : filter_encode_0 xs
+ | otherwise = DoubleUs (fst x) (snd x) : filter_encode_0 xs
 
 --Modify run-length encoding part 2
 
@@ -73,5 +78,7 @@ filter_encode (x:xs)
  | fst x == 1  = filter_encode xs
  | otherwise = x : filter_encode xs
 
+print_SingleMe (SingleMe x) = x
+print_DoubleUs (DoubleUs x y) = y
 
 data Single  = Int
