@@ -17,5 +17,24 @@ convertToLower x = [ toLower c | c <- x ]
 --A lot of people coming from OOP get confused by typeclasses because they think 
 --they are like classes in object oriented languages. Well, they're not. 
 --You can think of them kind of as Java interfaces, only better.
--->>ghci :t (+)
+--ghci :t (+)
 -- (+) :: Num a => a -> a -> a
+
+-- User defined types
+-- https://www.haskell.org/tutorial/goodies.html
+
+data Color    = Red | Green | Blue | Indigo | Violet
+
+print_color :: Color -> [Char]
+
+print_color Red = "chumapu"
+print_color Green = "pacha"
+print_color Blue = "neela"
+print_color Indigo = "koppu"
+print_color Violet = "arinjuda"
+-- Not in scope: data constructor 
+--print_color _ = "No Color"
+
+
+
+--data Point a            = Pt a a
