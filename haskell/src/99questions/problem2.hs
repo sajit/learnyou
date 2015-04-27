@@ -65,4 +65,13 @@ encode_me (x:xs) acc =  encode_me xs ((length x,head x) : acc)
 --Modify the result of problem 10 in such a way that if an element has no duplicates
 -- it is simply copied into the result list. Only elements with duplicates are transferred as (N E) lists.
 
+--Modify run-length encoding part 2
+
+-- Filter out encodings that have 1 length
+filter_encode [] = []
+filter_encode (x:xs)   
+ | fst x == 1  = filter_encode xs
+ | otherwise = x : filter_encode xs
+
+
 data Single  = Int
