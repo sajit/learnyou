@@ -18,3 +18,11 @@ dropNth x n acc
 --(*) Split a list into two parts; the length of the first part is given.
 
 split_list x n = ((take n x) , (drop n x))
+
+--(**) Extract a slice from a list.
+--Given two indices, i and k, the slice is the list containing the elements between 
+--the i'th and k'th element of the original list (both limits included). 
+
+splice x i k  
+  | k >= (length x) = error "bad argument"
+  | otherwise =  drop (i-1) (take k x)
