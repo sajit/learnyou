@@ -85,3 +85,9 @@ print_DoubleUs (DoubleUs x y) = y
 
 decode_me [] = []
 decode_me (x:xs) = [(snd x) | y <- [1.. (fst x)] ] ++ decode_me xs
+
+--4 Problem 14
+--(*) Duplicate the elements of a list.
+
+duplicate_me [] = []
+duplicate_me (x:xs) = x : x : duplicate_me xs
