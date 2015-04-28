@@ -81,4 +81,7 @@ filter_encode (x:xs)
 print_SingleMe (SingleMe x) = x
 print_DoubleUs (DoubleUs x y) = y
 
-data Single  = Int
+--(**) Decode a run-length encoded list.
+
+decode_me [] = []
+decode_me (x:xs) = [(snd x) | y <- [1.. (fst x)] ] ++ decode_me xs
