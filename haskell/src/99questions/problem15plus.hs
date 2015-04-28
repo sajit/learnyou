@@ -12,3 +12,9 @@ dropNth x n acc
  | (length x) < n = x ++ acc
  | (length x) == n = (take (n-1) x) ++ acc
  | otherwise =  dropNth (drop n x) n ((take (n-1) x) ++ acc)  
+
+
+--7 Problem 17
+--(*) Split a list into two parts; the length of the first part is given.
+
+split_list x n = ((take n x) , (drop n x))
