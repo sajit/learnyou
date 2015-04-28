@@ -26,3 +26,15 @@ split_list x n = ((take n x) , (drop n x))
 splice x i k  
   | k >= (length x) = error "bad argument"
   | otherwise =  drop (i-1) (take k x)
+
+--9 Problem 19
+--(**) Rotate a list N places to the left.
+
+--Hint: Use the predefined functions length and (++).
+
+rotate x n  = 
+    let split = split_list x n
+     in (snd split) ++ (fst split)
+
+
+
