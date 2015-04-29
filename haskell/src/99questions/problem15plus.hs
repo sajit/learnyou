@@ -36,5 +36,12 @@ rotate x n  =
     let split = split_list x n
      in (snd split) ++ (fst split)
 
+--10 Problem 20
+--(*) Remove the K'th element from a list.
+
+remove_kth x n 
+  | n >= (length x) = error "too long"
+  | otherwise = take (n-1) x ++ drop n x
+
 
 
