@@ -57,4 +57,9 @@ object Chapter2 {
     val message = "The factorial of %d is %d."
     message.format(x,factorial(x))
   }
+
+  def formatResult(x:Int,f:Int=>Int):String = {
+    val message = "The result of %d is %d"
+    message.format(x,f(x))
+  }
 }

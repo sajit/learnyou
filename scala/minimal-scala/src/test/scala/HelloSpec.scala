@@ -1,8 +1,7 @@
-import fpscala.chapter2.Chapter2
 import org.scalatest._
-import org.scalatest.matchers.ShouldMatchers
 
-class HelloSpec extends FlatSpec with ShouldMatchers {
+import fpscala.chapter2._
+class HelloSpec extends FlatSpec with Matchers {
   "Hello" should "have tests" in {
     true should be === true
   }
@@ -14,5 +13,11 @@ class HelloSpec extends FlatSpec with ShouldMatchers {
     Chapter2.fibo(4) should be === 5
     Chapter2.fibo(5) should be === 8
 
+
+
+  }
+  "Formatting " should "test" in {
+    val expected = "The result of 4 is 24"
+    Chapter2.formatResult(4,Chapter2.factorial) should be === expected
   }
 }
