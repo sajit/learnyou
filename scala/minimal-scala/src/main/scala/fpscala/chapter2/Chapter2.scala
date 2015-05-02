@@ -36,4 +36,16 @@ object Chapter2 {
     do_tail_factorial(n,1)
   }
 
+  def fibo(n:Int):Int = {
+    @annotation.tailrec
+    def do_fibo(n:Int,a:Int,b:Int):Int = {
+      n match {
+        case x if x<=1 => a + b
+        case _ => do_fibo(n-1,b,a+b)
+      }
+
+    }
+    do_fibo(n,0,1)
+  }
+
 }

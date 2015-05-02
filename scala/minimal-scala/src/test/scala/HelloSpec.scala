@@ -10,5 +10,9 @@ class HelloSpec extends FlatSpec with ShouldMatchers {
   "Chapter 2 exercises" should "work in" in {
     Chapter2.factorial(3) should be === 6
     Chapter2.tail_factorial(4) should be === 24
+
+    Chapter2.fibo(4) should be === 5
+    Chapter2.fibo(5) should be === 8
+
   }
 }
