@@ -1,3 +1,4 @@
+import com.example.Foo
 import org.scalatest._
 
 import fpscala.chapter2._
@@ -19,5 +20,10 @@ class HelloSpec extends FlatSpec with Matchers {
   "Formatting " should "test" in {
     val expected = "The result of 4 is 24"
     Chapter2.formatResult(4,Chapter2.factorial) should be === expected
+  }
+
+  "Polymorphic parameterisms" should "test " in {
+    val fooList = List(Foo("ponnu"),Foo("jose"))
+    Chapter2.findFirst(fooList,Foo("jose")) should be ===1
   }
 }

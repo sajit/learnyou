@@ -62,4 +62,23 @@ object Chapter2 {
     val message = "The result of %d is %d"
     message.format(x,f(x))
   }
+
+  def findFirst[A](arr:List[A],word:A):Int = {
+    @annotation.tailrec
+    def doFindFirst(list:List[A],currentIdx:Int):Int = {
+      if(list.isEmpty){
+        -1
+      }
+      else{
+        val head = list.head
+        if(head.equals(word)){
+          currentIdx
+        }
+        else{
+          doFindFirst(list.tail,currentIdx+1)
+        }
+      }
+    }
+    doFindFirst(arr,0)
+  }
 }
