@@ -48,4 +48,13 @@ object Chapter2 {
     do_fibo(n,0,1)
   }
 
+  def formatAbs(x:Int) = {
+    val message = "The absolute value of %d is %d"
+    message.format(x, Math.abs(x))
+  }
+
+  def formatFactorial(x:Int) = {
+    val message = "The factorial of %d is %d."
+    message.format(x,factorial(x))
+  }
 }
