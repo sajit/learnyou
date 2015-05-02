@@ -62,4 +62,16 @@ maxValList (x:xs) = max x  (maxValList xs)
 maxWithX x  = max x
 --Max with 4 , curried function
 maxWith4 = max 4 
+
+-- lazy evaluation
+
+bad_list = [1,5,65,error "oops",7]
+
+-- this is ok
+ok_head = head bad_list 
+
+-- this is also ok
+prefix_list = take 3 bad_list -- ok
+
+suffix = drop 4 bad_list -- also ok
  
