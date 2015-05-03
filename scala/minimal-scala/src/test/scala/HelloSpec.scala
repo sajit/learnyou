@@ -25,5 +25,9 @@ class HelloSpec extends FlatSpec with Matchers {
   "Polymorphic parameterisms" should "test " in {
     val fooList = List(Foo("ponnu"),Foo("jose"))
     Chapter2.findFirst(fooList,Foo("jose")) should be ===1
+
+    val intList = List(1,4,5,6,13)
+
+    Samples.findFirst(intList,(x:Int) => (x%2==0)) should be === 1
   }
 }
