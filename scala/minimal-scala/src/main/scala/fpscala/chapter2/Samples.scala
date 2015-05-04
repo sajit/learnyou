@@ -34,5 +34,11 @@ object Samples {
     doIsSorted(as,as.head)
   }
 
+  def isSorted2[A](as:List[A],ordered:(A,A) => Boolean):Boolean = as match {
+    case Nil => true
+    case x::Nil => true
+    case (x::y::xs) => ordered(x,y) && isSorted2(y::xs,ordered)
+  }
+
 
 }

@@ -39,5 +39,10 @@ class HelloSpec extends FlatSpec with Matchers {
     Samples.isSorted(in,(x:Int,y:Int) => (x <= y)) should be === true
 
     Samples.isSorted(List(3,4,1,10),(x:Int,y:Int) => (x<=y)) should be === false
+
+    Samples.isSorted2(in,(x:Int,y:Int) => (x <= y)) should be === true
+
+    Samples.isSorted2(List(3,4,1,10),(x:Int,y:Int) => (x<=y)) should be === false
+
   }
 }
