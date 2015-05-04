@@ -29,5 +29,15 @@ class HelloSpec extends FlatSpec with Matchers {
     val intList = List(1,4,5,6,13)
 
     Samples.findFirst(intList,(x:Int) => (x%2==0)) should be === 1
+
+
+  }
+
+  "Ordered function" should "be ordered " in {
+    val in = List(2,3,5,6,12)
+
+    Samples.isSorted(in,(x:Int,y:Int) => (x <= y)) should be === true
+
+    Samples.isSorted(List(3,4,1,10),(x:Int,y:Int) => (x<=y)) should be === false
   }
 }

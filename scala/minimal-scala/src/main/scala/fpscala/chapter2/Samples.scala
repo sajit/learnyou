@@ -24,4 +24,15 @@ object Samples {
     doFindFirst(arr,0)
   }
 
+  def isSorted[A](as:List[A] ,ordered: (A,A) => Boolean):Boolean = {
+    @annotation.tailrec
+    def doIsSorted(list:List[A],prev:A):Boolean = list match {
+      case Nil => true
+      case (x::xs) => ordered(prev,x) && doIsSorted(xs,x)
+  }
+
+    doIsSorted(as,as.head)
+  }
+
+
 }
