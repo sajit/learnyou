@@ -21,4 +21,20 @@ object Partials {
    * @return
    */
   def curry[A,B,C](f:(A,B) => C): A => (B => C) = (a:A) => partial1(a,f)
+
+  //essentially the same as curry
+  def curry1[A,B,C](f:(A,B) => C): A => (B => C) = (a:A) => (b:B) => f(a,b)
+
+  /**
+   * Reverse transformation of curry
+   * @param f
+   * @tparam A
+   * @tparam B
+   * @tparam C
+   * @return
+   */
+  def uncurry[A,B,C](f:A => B => C):(A,B)=> C = (a:A,b:B) => f(a)(b)
+
+  //Correct :)
+  def compose [A,B,C](f: B=> C, g:A => B): A => C = (a:A) => f(g(a))
 }
