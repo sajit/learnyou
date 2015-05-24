@@ -67,6 +67,18 @@ object List{
         case false => dropWhile2(t,predicate)
       }
     }
+
+  def append[A](a1:List[A],a2:List[A]):List[A] = (a1,a2) match {
+    case (Nil,a2) => a2
+    case (Cons(h,t),a2) => Cons(h,append(t,a2))
+  }
+
+  def init[A](al:List[A]):List[A] = al match {
+    case Nil => sys.error("impossible")
+    case Cons(h,Nil) => Nil
+    case Cons(h,t) => Cons(h,init(t))
+  }
+  
   /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
