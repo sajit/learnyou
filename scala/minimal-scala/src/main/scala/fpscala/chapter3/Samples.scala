@@ -78,7 +78,39 @@ object List{
     case Cons(h,Nil) => Nil
     case Cons(h,t) => Cons(h,init(t))
   }
-  
+
+  def last[A](al:List[A]):A = al match {
+    case Nil => sys.error("nooo")
+    case Cons(x,Nil) => x
+    case Cons(h,t) => last(t)
+  }
+
+  def foldRight[A,B] (as:List[A],z:B)(f:(A,B) => B):B = as match {
+    case Nil => z
+    case Cons(x,xs) => f(x,foldRight(xs,z)(f))
+  }
+
+  def length[A](as:List[A]):Int = foldRight(as,0)((_,acc) => acc + 1)
+
+
+  @annotation.tailrec
+  def mfl[A,B](as:List[A],z:B)(f:(B,A) => B): B = as match{
+    case Nil => z
+    case _ => {
+      mfl(init(as),f(z,last(as)))(f)
+
+    }
+  }
+
+  def sumIsh(as:List[Int]):Int = mfl(as,0)((a,b) => a + b)
+
+  def productIs(as:List[Int]) = mfl(as,1)((a,b) => a * b)
+
+  def reverse[A] (as:List[A]):List[A] = as match {
+    case Nil => Nil
+    case Cons(h:t) => reverse(t) ++ Cons(h,Nil)
+  }
+
   /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
