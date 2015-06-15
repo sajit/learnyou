@@ -102,7 +102,10 @@ object List{
 
   def productIs(as:List[Int]) = mfl(as,1)((a,b) => a * b)
 
-  def addX[T](x:Int,al : List[T]):List[T] = ???
+  def map[A,B] (as:List[A])(f: A => B):List[B] = as match {
+    case Nil => Nil
+    case Cons(h,t) => Cons(f(h),map(t)(f))
+  }
 
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
