@@ -11,4 +11,8 @@ object Arsenal {
     case (h::t) => (h+x) :: addX(x,t)
   }
 
+  def dToString(el:List[Double]):List[String] = el match {
+    case Nil => Nil
+    case (h::t) => h.toString :: dToString(t)
+  }
 }

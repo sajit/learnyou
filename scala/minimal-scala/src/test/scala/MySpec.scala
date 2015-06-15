@@ -14,4 +14,9 @@ class MySpec  extends FlatSpec with Matchers {
     Arsenal.addX(4,el) should be === (List(6,8,9,5))
   }
 
+  "DtoString" should " work as expected " in {
+    val el = List(3.5, 4.6)
+    Arsenal.dToString(el) should be === (List("3.5","4.6"))
+  }
+
 }
