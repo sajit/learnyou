@@ -21,10 +21,6 @@ object List{
     case Cons(x,xs) => x * product(xs)
   }
 
-  def tail(xs:List) = xs match {
-    case Nil => throw Exception
-    case Cons(_,xs) => xs
-  }
   def tail[A](l: List[A]): List[A] =
     l match {
       case Nil => sys.error("tail of empty list")
@@ -106,12 +102,9 @@ object List{
 
   def productIs(as:List[Int]) = mfl(as,1)((a,b) => a * b)
 
-  def reverse[A] (as:List[A]):List[A] = as match {
-    case Nil => Nil
-    case Cons(h:t) => reverse(t) ++ Cons(h,Nil)
-  }
+  def addX[T](x:Int,al : List[T]):List[T] = ???
 
-  /**
+    /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
    * @param as
