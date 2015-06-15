@@ -107,6 +107,13 @@ object List{
     case Cons(h,t) => Cons(f(h),map(t)(f))
   }
 
+  def filter[A](as:List[A],f:A => Boolean):List[A] = as match {
+    case Nil => Nil
+    case Cons(h,t) => f(h) match {
+      case true => Cons(h,filter(t,f))
+      case false => filter(t,f)
+    }
+  }
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
