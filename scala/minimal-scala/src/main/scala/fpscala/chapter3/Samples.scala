@@ -86,6 +86,10 @@ object BList{
 
   def length[A](as:BList[A]):Int = foldRight(as,0)((_,acc) => acc + 1)
 
+  def foldLeft[A,B](as:BList[A],z:B)(f:(B,A) => B):B = as match {
+    case BNil => z
+    case BCons(x,xs) => foldLeft(xs,f(z,x))(f)
+  }
 
   @annotation.tailrec
   def mfl[A,B](as:BList[A],z:B)(f:(B,A) => B): B = as match{
