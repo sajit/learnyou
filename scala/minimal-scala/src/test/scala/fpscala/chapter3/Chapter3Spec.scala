@@ -15,5 +15,10 @@ class Chapter3Spec extends FlatSpec with Matchers {
       sum should be === (14)
     }
 
+    "length" should " calculate length" in {
+      val bList = BCons(4,BCons(5,BCons(3,BCons(2,BNil))))
+      BList.length(bList) should be (4)
+    }
+
 
 }
