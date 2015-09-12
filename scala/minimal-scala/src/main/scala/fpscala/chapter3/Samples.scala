@@ -91,6 +91,11 @@ object BList{
     case BCons(x,xs) => foldLeft(xs,f(z,x))(f)
   }
 
+  def reverse[A](aList:BList[A]):BList[A] = aList match {
+    case BNil => BNil
+    case BCons(x,xs) => append(reverse(xs),BCons(x,BNil))
+  }
+
   @annotation.tailrec
   def mfl[A,B](as:BList[A],z:B)(f:(B,A) => B): B = as match{
     case BNil => z
