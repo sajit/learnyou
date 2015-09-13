@@ -130,6 +130,11 @@ object BList{
       case false => filter(t,f)
     }
   }
+
+  def myFlatMap[A](ll:BList[BList[A]]):BList[A] = ll match {
+    case BNil => BNil
+    case BCons(h,t) => append(h,myFlatMap(t))
+  }
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
@@ -138,4 +143,6 @@ object BList{
    * @return
    */
   def apply[A](as:A*):BList[A]= if(as.isEmpty) BNil else BCons(as.head,apply(as.tail: _*))
+
+
 }

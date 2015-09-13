@@ -9,13 +9,13 @@ import org.scalatest.{Matchers, FlatSpec}
 class Chapter3Spec extends FlatSpec with Matchers {
 
 
-    "foldright " should " apply a function " in {
+    it  should " apply a function in foldRight " in {
       val bList = BCons(4,BCons(5,BCons(3,BCons(2,BNil))))
       val sum = BList.foldRight(bList,0)((x,y) => x + y)
       sum should be === (14)
     }
 
-    "length" should " calculate length" in {
+   it should " calculate length" in {
       val bList = BCons(4,BCons(5,BCons(3,BCons(2,BNil))))
       BList.length(bList) should be (4)
     }
@@ -53,5 +53,14 @@ class Chapter3Spec extends FlatSpec with Matchers {
     result should be === (BCons(2,BCons(4,BCons(6,BCons(-3,BCons(-5,BNil))))))
   }
 
+  it should "flatten a list of lists " in {
+    val a1 = BCons(2,BCons(4,BCons(6,BNil)))
+    val a2 = BCons(-3,BCons(-5,BNil))
+
+    val in:BList[BList[Int]] = BCons(a1,BCons(a2,BNil))
+    val result = BList.myFlatMap(in)
+    BList.length(result) should be === (5)
+    result should be === (BCons(2,BCons(4,BCons(6,BCons(-3,BCons(-5,BNil))))))
+  }
 
 }
