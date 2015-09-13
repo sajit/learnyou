@@ -67,6 +67,7 @@ object BList{
     case (BCons(h,t),a2) => BCons(h,append(t,a2))
   }
 
+
   def init[A](al:BList[A]):BList[A] = al match {
     case BNil => sys.error("impossible")
     case BCons(h,BNil) => BNil
@@ -95,6 +96,9 @@ object BList{
     case BNil => BNil
     case BCons(x,xs) => append(reverse(xs),BCons(x,BNil))
   }
+
+  //from solutions
+  def revV2[A](a:BList[A]):BList[A] = foldLeft(a, BList[A]())((acc,h) => BCons(h,acc))
 
   @annotation.tailrec
   def mfl[A,B](as:BList[A],z:B)(f:(B,A) => B): B = as match{

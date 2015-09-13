@@ -38,5 +38,12 @@ class Chapter3Spec extends FlatSpec with Matchers {
     reverse should be === (BCons(2,BCons(3,BCons(-5,BCons(4,BNil)))))
   }
 
+  it should "reverse from a foldLeft" in {
+    val bList = BCons(4,BCons(-5,BCons(3,BCons(2,BNil))))
+    val reverse = BList.revV2(bList)
+    BList.length(reverse) should be === (BList.length(bList))
+    reverse should be === (BCons(2,BCons(3,BCons(-5,BCons(4,BNil)))))
+  }
+
 
 }
