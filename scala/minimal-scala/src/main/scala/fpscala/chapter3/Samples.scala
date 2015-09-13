@@ -100,6 +100,11 @@ object BList{
   //from solutions
   def revV2[A](a:BList[A]):BList[A] = foldLeft(a, BList[A]())((acc,h) => BCons(h,acc))
 
+  def appendv2[A](a1:BList[A],a2:BList[A]):BList[A] = (a1,a2) match {
+    case (BNil,a2) => a2
+    case (BCons(h,t),a2) => BCons(h,foldRight(t,a2)((curr,acc) => appendv2(BCons(curr,BNil),acc)))
+  }
+
   @annotation.tailrec
   def mfl[A,B](as:BList[A],z:B)(f:(B,A) => B): B = as match{
     case BNil => z

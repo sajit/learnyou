@@ -45,5 +45,13 @@ class Chapter3Spec extends FlatSpec with Matchers {
     reverse should be === (BCons(2,BCons(3,BCons(-5,BCons(4,BNil)))))
   }
 
+  it should "append using foldRight" in {
+    val a1 = BCons(2,BCons(4,BCons(6,BNil)))
+    val a2 = BCons(-3,BCons(-5,BNil))
+    val result = BList.appendv2(a1,a2)
+    BList.length(result) should be === (5)
+    result should be === (BCons(2,BCons(4,BCons(6,BCons(-3,BCons(-5,BNil))))))
+  }
+
 
 }
