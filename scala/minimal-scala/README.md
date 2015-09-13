@@ -1,0 +1,1 @@
+Functional programming in Scala practice exercises.
