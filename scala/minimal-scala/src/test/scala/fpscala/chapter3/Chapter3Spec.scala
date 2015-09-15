@@ -63,4 +63,10 @@ class Chapter3Spec extends FlatSpec with Matchers {
     result should be === (BCons(2,BCons(4,BCons(6,BCons(-3,BCons(-5,BNil))))))
   }
 
+  it should "do lfatMapping" in {
+    val inp = BList(1,2,3)
+    val result = BList.flatMap(inp)( i => BList(i,i))
+    result should be (BList(1,1,2,2,3,3))
+  }
+
 }

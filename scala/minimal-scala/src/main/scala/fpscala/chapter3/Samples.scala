@@ -146,17 +146,14 @@ object BList{
     case BCons(h,t) => BCons(d.toString, d2s(t))
   }
 
-  def map[A,B](as:BList[A])(f : A => B):BList[B] = as match  {
-    case BNil => BNil
-    case BCons(h,t) => BCons(f(h),map(t)(f))
-  }
 
-  def filter[A](as:BList[A])(f:A => Boolean):BList[A] = as match {
+
+  def concat[A](l: BList[BList[A]]): BList[A] =
+    foldRight(l, BNil:BList[A])(append)
+
+  def flatMap[A,B](as:BList[A])(f:A => BList[B]):BList[B] = as match {
     case BNil => BNil
-    case BCons(h,t) => f(h) match {
-      case true => BCons(h,filter(t)(f))
-      case false => filter(t)(f)
-    }
+    case BCons(h,t) => append(f(h),flatMap(t)(f))
   }
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
