@@ -155,6 +155,14 @@ object BList{
     case BNil => BNil
     case BCons(h,t) => append(f(h),flatMap(t)(f))
   }
+
+
+  def addup(a1:BList[Int],a2:BList[Int]):BList[Int] = (a1,a2) match {
+    case (BNil,BNil) => BNil
+    case (BNil,a1) => sys.error("wont fly")
+    case (a2,BNil) => sys.error("wont walk")
+    case (BCons(h1,t1),BCons(h2,t2)) => BCons(h1+h2,addup(t1,t2))
+  }
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.

@@ -69,4 +69,9 @@ class Chapter3Spec extends FlatSpec with Matchers {
     result should be (BList(1,1,2,2,3,3))
   }
 
+  it should "add up for equal lengths" in {
+    val result = BList.addup(BList(1,2,3),BList(4,5,6))
+    result should be (BList(5,7,9))
+  }
+
 }
