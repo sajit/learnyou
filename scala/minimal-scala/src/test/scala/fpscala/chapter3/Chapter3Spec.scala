@@ -75,7 +75,10 @@ class Chapter3Spec extends FlatSpec with Matchers {
   }
 
   it should "throw up" in {
-    BList.addup(BList(1,3,4),BNil)
+    intercept[RuntimeException]{
+      BList.addup(BList(1,3,4),BNil)
+    }
+
   }
 
 }
