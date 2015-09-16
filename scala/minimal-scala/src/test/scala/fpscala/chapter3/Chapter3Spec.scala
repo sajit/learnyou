@@ -74,4 +74,8 @@ class Chapter3Spec extends FlatSpec with Matchers {
     result should be (BList(5,7,9))
   }
 
+  it should "throw up" in {
+    BList.addup(BList(1,3,4),BNil)
+  }
+
 }
