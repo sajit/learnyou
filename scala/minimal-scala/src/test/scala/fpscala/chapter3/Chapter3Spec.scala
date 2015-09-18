@@ -81,4 +81,12 @@ class Chapter3Spec extends FlatSpec with Matchers {
 
   }
 
+  it should " zip with " in {
+    val a1:BList[Int] = BList(1,2,3)
+    val a2:BList[Int] = BList(-1,3,2)
+    val f:(Int,Int) => Int = (x,y) => x*y
+    val result = BList.zipWith(a1,a2,f)
+    result should be (BList(-1,6,6))
+  }
+
 }

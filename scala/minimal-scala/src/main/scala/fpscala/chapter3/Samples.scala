@@ -163,6 +163,13 @@ object BList{
     case (a2,BNil) => sys.error("wont walk")
     case (BCons(h1,t1),BCons(h2,t2)) => BCons(h1+h2,addup(t1,t2))
   }
+
+  def zipWith[A](a1:BList[A],a2:BList[A],f:(A,A) => A):BList[A] = (a1,a2) match {
+    case (BNil,BNil) => BNil
+    case (a1,BNil) => sys.error("wont talk")
+    case (BNil,a2) => sys.error("dont bull")
+    case (BCons(h1,t1),BCons(h2,t2)) => BCons(f(h1,h2),zipWith(t1,t2,f))
+  }
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
