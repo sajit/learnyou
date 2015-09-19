@@ -97,4 +97,9 @@ class Chapter3Spec extends FlatSpec with Matchers {
     BList.hasSubsequence(sup,BList(4,1)) should be (false)
     BList.hasSubsequence(sup,BList(3,2)) should be (false)
   }
+
+  it should "count nodes in a CTree" in {
+    val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
+    CTree.size(tree) should be (5)
+  }
 }
