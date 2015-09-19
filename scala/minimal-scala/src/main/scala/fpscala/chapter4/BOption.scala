@@ -1,4 +1,4 @@
-package fpscala.chapter3
+package fpscala.chapter4
 
 /**
  * 	Meaning	Scala notation
