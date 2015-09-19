@@ -89,4 +89,12 @@ class Chapter3Spec extends FlatSpec with Matchers {
     result should be (BList(-1,6,6))
   }
 
+  it should " find subsequences " in {
+    val sup = BList(1,2,3,4)
+    BList.hasSubsequence(sup,BList(1,2)) should be (true)
+    BList.hasSubsequence(sup,BList(2,3)) should be (true)
+    BList.hasSubsequence(sup,BList(4)) should be (true)
+    BList.hasSubsequence(sup,BList(4,1)) should be (false)
+    BList.hasSubsequence(sup,BList(3,2)) should be (false)
+  }
 }

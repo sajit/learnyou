@@ -170,6 +170,15 @@ object BList{
     case (BNil,a2) => sys.error("dont bull")
     case (BCons(h1,t1),BCons(h2,t2)) => BCons(f(h1,h2),zipWith(t1,t2,f))
   }
+
+  def hasSubsequence[A](sup:BList[A],sub:BList[A]):Boolean = (sup,sub) match {
+    case (_,BNil) => true
+    case (BNil,_) => false
+    case (BCons(h1,t1),BCons(h2,t2)) => (h1 == h2) match {
+      case true => hasSubsequence(t1,t2)
+      case false => hasSubsequence(t1,sub)
+    }
+  }
     /**
    * Apply is a variadic function. A variadic function accepts zero or more arguments of that type.
    * In this example the type of argument A.
