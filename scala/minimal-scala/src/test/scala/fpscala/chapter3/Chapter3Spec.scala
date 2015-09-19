@@ -102,4 +102,9 @@ class Chapter3Spec extends FlatSpec with Matchers {
     val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
     CTree.size(tree) should be (5)
   }
+
+  it should "get max depth in a CTree "  in {
+    val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
+    CTree.depth(tree) should be (3)
+  }
 }

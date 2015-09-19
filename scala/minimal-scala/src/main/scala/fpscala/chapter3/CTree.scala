@@ -13,4 +13,14 @@ object CTree {
     case Leaf(x) => 1
     case Branch(left,right) => size(left) + size(right) + 1
   }
+
+  def maximum(node :CTree[Int]):Int = node match {
+    case Leaf(x) => x
+    case Branch(left,right) => maximum(left) max maximum(right)
+  }
+
+  def depth[A] (node :CTree[A]):Int = node match {
+    case Leaf(x) => 1
+    case Branch(left,right) => (depth(left) max depth(right)) + 1
+  }
 }
