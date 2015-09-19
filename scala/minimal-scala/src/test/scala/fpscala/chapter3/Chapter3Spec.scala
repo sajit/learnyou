@@ -107,4 +107,28 @@ class Chapter3Spec extends FlatSpec with Matchers {
     val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
     CTree.depth(tree) should be (3)
   }
+
+  it should "double values  in a CTree " in {
+    val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
+    val result = CTree.map[Int,Int](tree, x => x*2)
+    result should be (Branch(Branch(Leaf(6),Leaf(10)),Leaf(4)))
+  }
+
+  it should "implement size as fold " in {
+    val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
+    val result = CTree.fold[Int](tree,((x,y) => (x+y+1)), (_ => 1))
+    result should be (5)
+  }
+
+  it should "implement maximum as fold " in {
+    val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
+    val result = CTree.fold[Int](tree,((x,y) => x max y), (j => j))
+    result should be (5)
+  }
+
+  it should "implement depth as fold " in {
+    val tree = Branch(Branch(Leaf(3),Leaf(5)),Leaf(2))
+    val result = CTree.fold[Int](tree,((x,y) => (x max y)+1), (_ => 1))
+    result should be (3)
+  }
 }

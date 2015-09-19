@@ -23,4 +23,14 @@ object CTree {
     case Leaf(x) => 1
     case Branch(left,right) => (depth(left) max depth(right)) + 1
   }
+
+  def map[A,B](node:CTree[A],f: A => B):CTree[B] = node match  {
+    case Leaf(x) => Leaf(f(x))
+    case Branch(left,right) => Branch(map(left,f),map(right,f))
+  }
+
+  def fold[A](node:CTree[A],f:(A,A) => A,g:A => A):A = node match {
+    case Leaf(x) => g(x)
+    case Branch(left,right) => f(fold(left,f,g),fold(right,f,g))
+  }
 }
