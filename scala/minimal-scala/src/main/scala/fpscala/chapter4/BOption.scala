@@ -14,6 +14,13 @@ sealed trait BOption[+A] {
     case BNone => BNone
   }
 
+  def flatMap[B] (f: A => BOption[B]):BOption[B] = map(f) getOrElse BNone
+
+  def getOrElse[B >:A](default: => B):B = this match {
+    case BSome(x) => x
+    case BNone => default
+  }
+
 
 }
 case class BSome[+A](get:A) extends BOption[A]
