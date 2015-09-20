@@ -21,6 +21,15 @@ sealed trait BOption[+A] {
     case BNone => default
   }
 
+  def orElse[B >: A] (ob: => BOption[B]):BOption[B] = this match {
+    case BNone => ob
+    case _ => this
+  }
+
+  def filter(f: A => Boolean):BOption[A] = map(f) match {
+    case BSome(bool) => if(bool) BNone else this
+    case BNone => this
+  }
 
 }
 case class BSome[+A](get:A) extends BOption[A]
