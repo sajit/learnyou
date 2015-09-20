@@ -9,7 +9,13 @@ invariant	C[T] and C[T’] are not related	[T]
  * Created by sajit on 9/19/15.
  */
 sealed trait BOption[+A] {
-  def map[B](f:A => B): Option[B] = ???
+  def map[B](f:A => B): BOption[B] = this match  {
+    case BSome(x) => BSome(f(x))
+    case BNone => BNone
+  }
+
+
 }
 case class BSome[+A](get:A) extends BOption[A]
 case object BNone extends BOption[Nothing]
+
