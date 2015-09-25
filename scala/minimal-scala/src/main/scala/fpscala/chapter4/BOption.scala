@@ -35,3 +35,8 @@ sealed trait BOption[+A] {
 case class BSome[+A](get:A) extends BOption[A]
 case object BNone extends BOption[Nothing]
 
+object Utils {
+
+
+}
+
