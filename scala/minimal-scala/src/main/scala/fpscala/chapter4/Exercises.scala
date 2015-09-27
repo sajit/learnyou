@@ -40,4 +40,25 @@ object Exercises {
 
   def map2_real[A,B,C] (a:Option[A],b:Option[B])(f:(A,B) => C): Option[C] = a.flatMap{ aVal => b.flatMap{bVal => Some(f(aVal,bVal))}}
 
+  var count = 0
+  def sequence[A](a:List[Option[A]]):Option[List[A]] = {
+    def doSequence(list:List[Option[A]],soFar:List[A]):Option[List[A]] = {
+      if(list.isEmpty) Some(soFar)
+      else {
+        list.head.flatMap{ el =>  {
+          count +=1
+          doSequence(list.tail,el :: soFar)}}
+
+      }
+    }
+    if(a.isEmpty) None
+    else {
+      count = 0
+      doSequence(a,List())
+    }
+  }
+
+  def resetCount() =  count = 0
+  def getCount = count
+
 }

@@ -36,32 +36,50 @@ class Chapter4Scala extends FlatSpec with Matchers{
   it should "calculate variance " in {
 
 
-    Exercises.variance(List(4,4,4)) shouldEqual(Some(0.0))
+    Exercises.variance(List(4,4,4)) shouldEqual Some(0.0)
   }
 
   it should "calculate variance 1" in {
 
 
-    Exercises.variance1(List(4,4,4)) shouldEqual(Some(0.0))
+    Exercises.variance1(List(4,4,4)) shouldEqual Some(0.0)
   }
 
   it should "convert by lifting" in {
-    Exercises.absO(Some("-2.0".toDouble)) shouldEqual(Some(2.0))
+    Exercises.absO(Some("-2.0".toDouble)) shouldEqual Some(2.0)
 
-    Exercises.absO(None) shouldEqual(None)
+    Exercises.absO(None) shouldEqual None
   }
 
   it should "map two values together" in {
     val f:(Int,Int) => Int = (x,y) => x+y
-    Exercises.map2_real(Some(5),None)(f) shouldEqual(None)
-    Exercises.map2_real(None,None)(f) shouldEqual(None)
-    Exercises.map2_real(None,Some(5))(f) shouldEqual(None)
-    Exercises.map2_real(Some(5),Some(3))(f) shouldEqual(Some(8))
+    Exercises.map2_real(Some(5),None)(f) shouldEqual None
+    Exercises.map2_real(None,None)(f) shouldEqual None
+    Exercises.map2_real(None,Some(5))(f) shouldEqual None
+    Exercises.map2_real(Some(5),Some(3))(f) shouldEqual Some(8)
 
-    Exercises.map2(Some(5),None)(f) shouldEqual(None)
+    Exercises.map2(Some(5),None)(f) shouldEqual None
 
 
 
+  }
+
+  it should "be None if any are None" in {
+    val ll = List(Some(5),Some(2),None,Some(9))
+    Exercises.sequence(ll) shouldEqual None
+  }
+
+  it should "be Some if only none are None" in {
+    val ll = List(Some(5),Some(2),Some(1),Some(9))
+    Exercises.sequence(ll) shouldEqual Some(List(9,1,2,5))
+  }
+
+  it should "only go far as first failure" in {
+    val ll = List(Some(5),Some(2),None,Some(9))
+    Exercises.resetCount()
+    Exercises.getCount shouldEqual 0
+    Exercises.sequence(ll)
+    Exercises.getCount shouldEqual 2
   }
 
 }
