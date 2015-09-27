@@ -39,4 +39,10 @@ class Chapter4Scala extends FlatSpec with Matchers{
     Exercises.variance(List(4,4,4)) shouldEqual(Some(0.0))
   }
 
+  it should "calculate variance 1" in {
+
+
+    Exercises.variance1(List(4,4,4)) shouldEqual(Some(0.0))
+  }
+
 }
