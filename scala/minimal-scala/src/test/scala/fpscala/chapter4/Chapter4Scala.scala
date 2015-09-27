@@ -51,4 +51,17 @@ class Chapter4Scala extends FlatSpec with Matchers{
     Exercises.absO(None) shouldEqual(None)
   }
 
+  it should "map two values together" in {
+    val f:(Int,Int) => Int = (x,y) => x+y
+    Exercises.map2_real(Some(5),None)(f) shouldEqual(None)
+    Exercises.map2_real(None,None)(f) shouldEqual(None)
+    Exercises.map2_real(None,Some(5))(f) shouldEqual(None)
+    Exercises.map2_real(Some(5),Some(3))(f) shouldEqual(Some(8))
+
+    Exercises.map2(Some(5),None)(f) shouldEqual(None)
+
+
+
+  }
+
 }

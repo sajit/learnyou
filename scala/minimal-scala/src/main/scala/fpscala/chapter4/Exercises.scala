@@ -31,5 +31,13 @@ object Exercises {
 
   val absO: Option[Double] => Option[Double] = lift(math.abs)
 
+  def map2[A,B,C] (a:Option[A],b:Option[B])(f:(A,B) => C): Option[C] = (a,b) match {
+    case (None,None) => None
+    case (None,_) => None
+    case (_, None) => None
+    case (Some(aVal),Some(bVal)) => Some(f(aVal,bVal))
+  }
+
+  def map2_real[A,B,C] (a:Option[A],b:Option[B])(f:(A,B) => C): Option[C] = a.flatMap{ aVal => b.flatMap{bVal => Some(f(aVal,bVal))}}
 
 }
