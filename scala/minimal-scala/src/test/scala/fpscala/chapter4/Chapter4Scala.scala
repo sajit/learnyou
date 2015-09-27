@@ -45,4 +45,10 @@ class Chapter4Scala extends FlatSpec with Matchers{
     Exercises.variance1(List(4,4,4)) shouldEqual(Some(0.0))
   }
 
+  it should "convert by lifting" in {
+    Exercises.absO(Some("-2.0".toDouble)) shouldEqual(Some(2.0))
+
+    Exercises.absO(None) shouldEqual(None)
+  }
+
 }

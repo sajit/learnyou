@@ -27,4 +27,9 @@ object Exercises {
     }}.orElse(None)
   }
 
+  def lift[A,B](f: A => B): Option[A] => Option[B] = _ map f
+
+  val absO: Option[Double] => Option[Double] = lift(math.abs)
+
+
 }
