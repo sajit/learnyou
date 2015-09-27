@@ -57,7 +57,7 @@ class Chapter4Scala extends FlatSpec with Matchers{
     Exercises.map2_real(None,None)(f) shouldEqual None
     Exercises.map2_real(None,Some(5))(f) shouldEqual None
     Exercises.map2_real(Some(5),Some(3))(f) shouldEqual Some(8)
-
+   //
     Exercises.map2(Some(5),None)(f) shouldEqual None
 
 
@@ -80,6 +80,22 @@ class Chapter4Scala extends FlatSpec with Matchers{
     Exercises.getCount shouldEqual 0
     Exercises.sequence(ll)
     Exercises.getCount shouldEqual 2
+  }
+
+  def foo(x:String):Option[Int] = {
+    try {
+      Some(x.toInt)
+    }
+    catch {case e:Exception => None}
+  }
+  it should "traverse in v2 to None" in {
+    val a = List("23","1a","34")
+    Exercises.traversev2(a)(foo) shouldBe None
+  }
+
+  it should "traverse in v2 to Some" in {
+    val a = List("23","11","34")
+    Exercises.traversev2(a)(foo) shouldBe Some(List(34,11,23))
   }
 
 }

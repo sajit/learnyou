@@ -61,4 +61,23 @@ object Exercises {
   def resetCount() =  count = 0
   def getCount = count
 
+  def traversev1[A,B](a:List[A])(f: A => Option[B]):Option[List[B]] = {
+    sequence(a map f)
+  }
+  def traversev2[A,B](a:List[A])(f: A => Option[B]):Option[List[B]] =  {
+    def doTraverse(al:List[A],soFar:List[B]):Option[List[B]] = {
+        if(al.isEmpty) Some(soFar)
+       else {
+          f(al.head).flatMap{ el  =>  doTraverse(al.tail,el :: soFar)}
+        }
+    }
+    doTraverse(a,List())
+  }
+
+  /**
+   * From the source code
+   * https://github.com/fpinscala/fpinscala/blob/master/answers/src/main/scala/fpinscala/errorhandling/Option.scala
+   */
+  def sequenceViaTraverse[A](a: List[Option[A]]): Option[List[A]] =
+    traversev2(a)(x => x)
 }
