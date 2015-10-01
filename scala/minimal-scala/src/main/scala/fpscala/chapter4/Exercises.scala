@@ -80,4 +80,11 @@ object Exercises {
    */
   def sequenceViaTraverse[A](a: List[Option[A]]): Option[List[A]] =
     traversev2(a)(x => x)
+
+
+}
+
+object Beither {
+  def sequence[E,A](a:List[Either[E,A]]):Either[E,List[A]] = ???
+  def traverse[E,A,B](a:List[A])(f: A => Either[E,B]):Either[E,List[B]] = ???
 }
