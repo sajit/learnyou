@@ -85,6 +85,19 @@ object Exercises {
 }
 
 object Beither {
-  def sequence[E,A](a:List[Either[E,A]]):Either[E,List[A]] = ???
+  def sequence[E,A](a:List[Beither[E,A]]):Beither[E,List[A]] = {
+    def doSequence(list:List[Beither[E,A]],soFar:List[A]):Beither[E,List[A]] = {
+      if(list.isEmpty) {
+        Right(soFar)
+      }
+      else{
+        list.head match {
+          case Left(x) => Left(x)
+          case Right(x) => doSequence(list.tail,x :: soFar)
+        }
+      }
+    }
+    doSequence(a,List())
+  }
   def traverse[E,A,B](a:List[A])(f: A => Either[E,B]):Either[E,List[B]] = ???
 }
