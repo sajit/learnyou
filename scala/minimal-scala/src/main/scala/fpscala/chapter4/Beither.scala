@@ -38,3 +38,27 @@ sealed trait Beither[+E,+A] {
 case class Left[+E](value:E) extends Beither[E, Nothing]
 case class Right[+A](value:A) extends Beither[Nothing,A]
 
+object Beither {
+  def sequence[E,A](a:List[Beither[E,A]]):Beither[E,List[A]] = {
+    def doSequence(list:List[Beither[E,A]],soFar:List[A]):Beither[E,List[A]] = {
+      if(list.isEmpty) {
+        Right(soFar)
+      }
+      else{
+        list.head match {
+          case Left(x) => Left(x)
+          case Right(x) => doSequence(list.tail,x :: soFar)
+        }
+      }
+    }
+    doSequence(a,List())
+  }
+
+
+  def traverse[E,A,B](es: List[A])(f: A => Beither[E, B]): Beither[E, List[B]] =
+    es match {
+      case Nil => Right(Nil)
+      case h::t => (f(h) map2 traverse(t)(f))(_ :: _)
+    }
+}
+
