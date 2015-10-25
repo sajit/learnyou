@@ -44,6 +44,22 @@ sealed trait XStream[+A] {
     go(this)
   }
 
+  def take(n:Int):XStream[A] = this match {
+    case Cons(h,t) => {
+      if(n > 1) {
+
+        XStream.cons(h(),t().take(n-1))
+      }
+      else if(n == 1) {
+        XStream.cons(h(),Empty)
+      }
+      else {
+        this
+      }
+    }
+    case _ => sys.error("not_possible")
+  }
+
 
 }
 case object Empty extends XStream[Nothing]
