@@ -7,9 +7,14 @@ import org.scalatest.{Matchers, FlatSpec}
  */
 class Chapter5Spec extends FlatSpec with Matchers{
 
-  it should "take 3 elements of a stream" in {
+  it should "take 2 elements of a stream" in {
     val str = XStream(4,51,4,5,1)
     str.take(2).toList should be (List(4,51))
+  }
+
+  it should "drop 3 elements of a stream" in {
+    val str = XStream(4,5,3,5,1,50)
+    str.drop(3).toList should be (List(5,1,50))
   }
 
 }

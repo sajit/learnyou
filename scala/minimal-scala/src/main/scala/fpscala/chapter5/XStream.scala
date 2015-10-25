@@ -60,6 +60,21 @@ sealed trait XStream[+A] {
     case _ => sys.error("not_possible")
   }
 
+  def drop(n:Int):XStream[A] = this match {
+    case Cons(h,t) => {
+      if(n > 0){
+        t().drop(n-1)
+      }
+      else if(n ==0){
+        this
+      }
+      else {
+        sys.error("error in judgement")
+      }
+    }
+    case _ => sys.error("not_possible")
+  }
+
 
 }
 case object Empty extends XStream[Nothing]
