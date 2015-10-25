@@ -88,6 +88,18 @@ sealed trait XStream[+A] {
     case _ => Empty
   }
 
+  def exists(p: A => Boolean): Boolean = this match {
+    case Cons(h, t) => p(h()) || t().exists(p)
+    case _ => false
+  }
+
+  def foldRight[B](z: => B)(f: (A, => B) => B): B = this match {
+    case Cons(h, t) => f(h(), t().foldRight(z)(f))
+    case _ => z
+  }
+
+  def exists2(p: A => Boolean): Boolean = foldRight(false)((x, y) => p(x) || y)
+
 
 }
 case object Empty extends XStream[Nothing]

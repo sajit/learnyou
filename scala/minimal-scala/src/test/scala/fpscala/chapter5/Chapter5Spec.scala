@@ -1,6 +1,6 @@
 package fpscala.chapter5
 
-import org.scalatest.{Matchers, FlatSpec}
+import org.scalatest.{FlatSpec, Matchers}
 
 /**
  * Created by sajit on 10/25/15.
@@ -23,4 +23,9 @@ class Chapter5Spec extends FlatSpec with Matchers{
     str.takeWhile(el => el % 2 != 0).toList should be (Nil)
   }
 
+  it should "detect existence " in {
+    val str = XStream(3, 5, 10, 2, 23)
+    str.exists2(x => x > 25) should be(false)
+    str.exists2(x => (x % 10 == 0)) should be(true)
+  }
 }
