@@ -75,6 +75,19 @@ sealed trait XStream[+A] {
     case _ => sys.error("not_possible")
   }
 
+  def takeWhile(p: A => Boolean):XStream[A] = this match {
+    case Cons(h,t) => {
+      lazy val head = h
+      if(p(head())){
+        XStream.cons(head(),t().takeWhile(p))
+      }
+      else{
+        Empty
+      }
+    }
+    case _ => Empty
+  }
+
 
 }
 case object Empty extends XStream[Nothing]

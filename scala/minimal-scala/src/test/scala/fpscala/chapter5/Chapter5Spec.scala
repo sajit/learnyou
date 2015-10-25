@@ -17,4 +17,10 @@ class Chapter5Spec extends FlatSpec with Matchers{
     str.drop(3).toList should be (List(5,1,50))
   }
 
+  it should "take elements till no match " in {
+    val str = XStream(2,6,1,4,10)
+    str.takeWhile(el => el % 2 == 0).toList should be (List(2,6))
+    str.takeWhile(el => el % 2 != 0).toList should be (Nil)
+  }
+
 }
