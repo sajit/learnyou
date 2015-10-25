@@ -28,4 +28,11 @@ class Chapter5Spec extends FlatSpec with Matchers{
     str.exists2(x => x > 25) should be(false)
     str.exists2(x => (x % 10 == 0)) should be(true)
   }
+
+  it should "return true iff all meet " in {
+    val result = XStream(3, 5, 7, 11).forAll(el => el % 2 != 0)
+    result should be(true)
+    XStream(3, 4, 5, 7).forAll(el => el % 2 != 0) should be(false)
+  }
+
 }

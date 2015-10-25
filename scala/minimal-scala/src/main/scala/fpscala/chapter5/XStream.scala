@@ -12,6 +12,7 @@ sealed trait XStream[+A] {
     case Cons(h,t) => h() :: t().toList
   }
 
+
   /**
    * Tail recursive version
    * @return
@@ -99,6 +100,12 @@ sealed trait XStream[+A] {
   }
 
   def exists2(p: A => Boolean): Boolean = foldRight(false)((x, y) => p(x) || y)
+
+
+  def forAll(p: A => Boolean): Boolean = this match {
+    case Cons(h, t) => p(h()) && t().forAll(p)
+    case _ => true
+  }
 
 
 }
