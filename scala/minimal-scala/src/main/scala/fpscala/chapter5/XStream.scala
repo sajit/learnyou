@@ -107,6 +107,22 @@ sealed trait XStream[+A] {
     case _ => true
   }
 
+  //Not sure why the following is not working
+  def takeWhile2(p: A => Boolean): XStream[A] = foldRight(XStream.empty[A])((a, b) => {
+    if (p(a)) {
+      XStream.cons(a, b.takeWhile2(p))
+    } else {
+      XStream.empty
+    }
+  })
+
+  //From github source code
+  def takeWhile_1(p: A => Boolean): XStream[A] = foldRight(XStream.empty[A])((h, t) => {
+    if (p(h)) XStream.cons(h, t)
+    else
+      XStream.empty
+  })
+
 
 }
 case object Empty extends XStream[Nothing]

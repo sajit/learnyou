@@ -35,4 +35,10 @@ class Chapter5Spec extends FlatSpec with Matchers{
     XStream(3, 4, 5, 7).forAll(el => el % 2 != 0) should be(false)
   }
 
+  it should "take while as fold right " in {
+    val str = XStream(2, 6, 1, 4, 10)
+    str.takeWhile2(el => el % 2 == 0).toList should be(List(2, 6))
+    str.takeWhile2(el => el % 2 != 0).toList should be(Nil)
+  }
+
 }
