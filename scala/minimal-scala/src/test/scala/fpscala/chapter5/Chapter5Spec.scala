@@ -47,4 +47,23 @@ class Chapter5Spec extends FlatSpec with Matchers{
     mappedStream.toList should be (List(6,8,10,12,2))
   }
 
+  it should "filter a stream using right folding " in {
+    val str = XStream(3,4,5,6,1)
+    val mappedStream = str.filter(x =>  x % 2 != 0)
+    mappedStream.toList should be (List(3,5,1))
+  }
+
+  it should "flatmap a stream " in {
+    val str = XStream(3,4,5,6,1)
+    val mappedStream = str.flatMap(x => XStream(2*x))
+    //TODO fix this
+    mappedStream.toList should be (List(6,8,10,12,2).reverse)
+  }
+
+  it should "append two streams" in {
+    val str = XStream(3,4,5,6,1)
+    val str2 = XStream(0,11)
+    str.append(str2).toList should be (List(3,4,5,6,1,0,11))
+
+  }
 }

@@ -133,6 +133,23 @@ sealed trait XStream[+A] {
     XStream.cons(f(h),t)
   })
 
+  def filter(p: A => Boolean):XStream[A] = foldRight(XStream.empty[A])((h,t) => {
+    if(p(h)){
+      XStream.cons(h,t)
+    }else{
+      t
+    }
+  })
+
+  def append[B>:A](b:XStream[B]):XStream[B] =  foldRight(b)((h,t) => {
+    XStream.cons(h,t)
+  })
+
+  def flatMap[B](f:A =>XStream[B]):XStream[B] = foldRight(XStream.empty[B])((h,t) => {
+    t.append(f(h))
+
+  })
+
 }
 case object Empty extends XStream[Nothing]
 case class Cons[+A](h: () => A, t: () => XStream[A]) extends XStream[A]
