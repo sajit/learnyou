@@ -41,4 +41,10 @@ class Chapter5Spec extends FlatSpec with Matchers{
     str.takeWhile2(el => el % 2 != 0).toList should be(Nil)
   }
 
+  it should "map a stream using right folding " in {
+    val str = XStream(3,4,5,6,1)
+    val mappedStream = str.map_1(x => 2*x)
+    mappedStream.toList should be (List(6,8,10,12,2))
+  }
+
 }

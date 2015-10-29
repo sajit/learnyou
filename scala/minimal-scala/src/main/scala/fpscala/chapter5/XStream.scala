@@ -123,6 +123,15 @@ sealed trait XStream[+A] {
       XStream.empty
   })
 
+  //dumb implementation
+  def map[B](f: A => B):XStream[B] = this match {
+    case Empty => Empty
+    case Cons(h,t) => XStream.cons(f(h()),t().map(f))
+  }
+
+  def map_1[B](f: A=> B):XStream[B] = foldRight(XStream.empty[B])((h,t) => {
+    XStream.cons(f(h),t)
+  })
 
 }
 case object Empty extends XStream[Nothing]
