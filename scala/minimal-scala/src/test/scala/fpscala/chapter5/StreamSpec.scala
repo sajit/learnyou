@@ -20,4 +20,10 @@ class StreamSpec extends FlatSpec with Matchers{
     intercept[TimeoutException] { Await.result(f, 1 second) }
 
   }
+
+  it should "create a list of 100 elements with increasing values " in {
+    val result:List[Int] = StreamUtils.from_2(1)
+    result.length should be (100)
+    result should be (sorted)
+  }
 }
