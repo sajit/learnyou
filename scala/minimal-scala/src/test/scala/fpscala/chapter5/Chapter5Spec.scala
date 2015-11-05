@@ -66,4 +66,6 @@ class Chapter5Spec extends FlatSpec with Matchers{
     str.append(str2).toList should be (List(3,4,5,6,1,0,11))
 
   }
+
+
 }
