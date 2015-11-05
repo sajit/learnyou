@@ -23,7 +23,7 @@ class StreamSpec extends FlatSpec with Matchers{
 
   it should "create a list of 100 elements with increasing values " in {
     val result:List[Int] = StreamUtils.from_2(1)
-    result.length should be (100)
+    result.length should be (10)
     result should be (sorted)
   }
 }

@@ -11,13 +11,13 @@ object StreamUtils {
     Stream.continually(a)
   }
 //
-//  def from_1(n:Int):Stream[Int] = {
-//    val nStream = constant(n)
-//    nStream.foldRight(n)((h,t) => )
-//  }
+  def from_1(n:Int):Stream[Int] = {
+    val nStream = constant(n)
+    nStream.zipWithIndex.map{case (el, index) => el + index}
+  }
 
   def from_2(n:Int):List[Int] = {
-    val ns = List.fill(100)(n)
+    val ns = List.fill(10)(n)
     ns.zipWithIndex.map{case (el, indx) => el + indx}
   }
 }
