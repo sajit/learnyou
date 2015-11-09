@@ -21,7 +21,7 @@ object StreamUtils {
     ns.zipWithIndex.map{case (el, indx) => el + indx}
   }
 
-//  def fibs:Stream[Int] = {
-//
-//  }
+  def fibs(cur:Int,prev:Int):Stream[Int] = {
+     Stream.cons(prev,fibs(cur+prev,cur))
+  }
 }

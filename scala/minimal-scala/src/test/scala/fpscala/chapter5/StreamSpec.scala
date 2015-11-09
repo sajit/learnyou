@@ -35,4 +35,10 @@ class StreamSpec extends FlatSpec with Matchers{
     intercept[TimeoutException] { Await.result(f, 1 second) }
 
   }
+
+  it should "create a fibonacci stream " in {
+    val fibo = StreamUtils.fibs(1,0)
+    val fiboList = fibo.take(10).toList
+    fiboList.foreach{el => print(el+" ,")}
+  }
 }
