@@ -1,5 +1,7 @@
 package fpscala.chapter5
 
+import scala.collection.immutable.Stream.cons
+
 /**
  * Created by sajit.kunnumkal on 11/5/2015.
  */
@@ -24,4 +26,15 @@ object StreamUtils {
   def fibs(cur:Int,prev:Int):Stream[Int] = {
      Stream.cons(prev,fibs(cur+prev,cur))
   }
+
+//  def unfold[A,S](z:S)(f: S => Option[(A,S)]):Stream[A] = f(z) match  {
+//      case Some(a,t) => cons(a,unfold(t)(f))
+//      case None => Stream.empty[A]
+//
+//  }
+  def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
+    f(z) match {
+      case Some((h,s)) => Stream.cons(h, unfold(s)(f))
+      case None => Stream.empty
+    }
 }
