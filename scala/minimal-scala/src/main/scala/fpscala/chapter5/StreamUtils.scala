@@ -20,4 +20,8 @@ object StreamUtils {
     val ns = List.fill(10)(n)
     ns.zipWithIndex.map{case (el, indx) => el + indx}
   }
+
+//  def fibs:Stream[Int] = {
+//
+//  }
 }

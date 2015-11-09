@@ -26,4 +26,13 @@ class StreamSpec extends FlatSpec with Matchers{
     result.length should be (10)
     result should be (sorted)
   }
+
+  it should "create a stream of length 100 elements with increasing values " in {
+    val str:Stream[Int] = StreamUtils.from_1(1)
+    lazy val f = Future {
+      str should be (sorted)
+    }
+    intercept[TimeoutException] { Await.result(f, 1 second) }
+
+  }
 }
