@@ -41,4 +41,19 @@ class StreamSpec extends FlatSpec with Matchers{
     val fiboList = fibo.take(10).toList
     fiboList.foreach{el => print(el+" ,")}
   }
+
+  it should "create a from via unfold " in {
+    val from = StreamUtils.fromViaUnfold(2).take(5).toList
+    from should be (List(2,3,4,5,6))
+  }
+
+  it should "calculate fibonacci by unfolding" in {
+    val fibo = StreamUtils.fibsViaUnfold.take(6).toList
+    fibo should be (List(0,1,1,2,3,5))
+  }
+
+  it should "create constant via unfold " in {
+    val from = StreamUtils.constantViaUnfolds(2).take(5).toList
+    from should be (List(2,2,2,2,2))
+  }
 }

@@ -27,14 +27,19 @@ object StreamUtils {
      Stream.cons(prev,fibs(cur+prev,cur))
   }
 
-//  def unfold[A,S](z:S)(f: S => Option[(A,S)]):Stream[A] = f(z) match  {
-//      case Some(a,t) => cons(a,unfold(t)(f))
-//      case None => Stream.empty[A]
-//
-//  }
   def unfold[A, S](z: S)(f: S => Option[(A, S)]): Stream[A] =
     f(z) match {
       case Some((h,s)) => Stream.cons(h, unfold(s)(f))
       case None => Stream.empty
     }
+//
+  def fibsViaUnfold:Stream[Int] = unfold((0,1)){
+    case (prev,curr) => Some(prev,(curr,prev+curr))
+  }
+
+  def fromViaUnfold(n:Int):Stream[Int] = unfold(n){el =>
+    Some(el,el+1)
+  }
+
+  def constantViaUnfolds(x:Int):Stream[Int] = unfold(x)(el => Some(el,el))
 }
