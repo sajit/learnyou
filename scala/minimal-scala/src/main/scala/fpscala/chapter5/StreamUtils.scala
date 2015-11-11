@@ -2,6 +2,7 @@ package fpscala.chapter5
 
 import scala.collection.immutable.Stream.cons
 
+
 /**
  * Created by sajit.kunnumkal on 11/5/2015.
  */
@@ -42,4 +43,19 @@ object StreamUtils {
   }
 
   def constantViaUnfolds(x:Int):Stream[Int] = unfold(x)(el => Some(el,el))
+
+  def mapViaUnfold[A,B](a:Stream[A],f: A => B): Stream[B] =
+    unfold(a) {
+      case Stream.cons(h,t) => Some((f(h), t))
+      case _ => None
+    }
+
+  def takeViaUnfolds[A](a:Stream[A],n:Int):Stream[A] = unfold(a,n) {
+    case (cons(h,t),1) => Some(h,(Stream.empty,0))
+    case (cons(h,t),n) => Some(h,(t,n-1))
+    case (empty,0) => None
+    case (empty,n) => sys.error("how?")
+
+  }
+
 }

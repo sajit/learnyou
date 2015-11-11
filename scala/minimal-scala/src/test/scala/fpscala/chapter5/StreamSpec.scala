@@ -56,4 +56,16 @@ class StreamSpec extends FlatSpec with Matchers{
     val from = StreamUtils.constantViaUnfolds(2).take(5).toList
     from should be (List(2,2,2,2,2))
   }
+
+  it should "map a stream via unfold" in {
+    val aStream = Stream("Hello", "World","is","awesome")
+    val lengthStream = StreamUtils.mapViaUnfold[String,Int](aStream, el => el.length)
+    lengthStream.toList should be (List(5,5,2,7))
+  }
+
+  it should "take n elements of a stream via unfold " in {
+    val aStream = Stream("Hello", "World","is","awesome")
+    val shortStream = StreamUtils.takeViaUnfolds(aStream,2)
+    shortStream.toList should be (List("Hello","World"))
+  }
 }
