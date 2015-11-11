@@ -68,4 +68,17 @@ class StreamSpec extends FlatSpec with Matchers{
     val shortStream = StreamUtils.takeViaUnfolds(aStream,2)
     shortStream.toList should be (List("Hello","World"))
   }
+
+  it should "take elements of a string while matching a condition" in {
+    val aStream = Stream("Hello", "World","is","awesome")
+    val bigWords = StreamUtils.takeWhileViaUnfold[String](aStream,el => el.length > 4 )
+    bigWords.toList should be (List("Hello","World"))
+  }
+
+  it should "add up two streams with zip " in {
+    val odds = Stream(3,5,11)
+    val evens = Stream(2,6,10)
+    val sum = StreamUtils.zipWith(odds,evens)((e1,e2) => e1+e2)
+    sum.toList should be (List(5,11,21))
+  }
 }

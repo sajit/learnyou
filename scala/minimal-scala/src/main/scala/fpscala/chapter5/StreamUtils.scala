@@ -58,4 +58,20 @@ object StreamUtils {
 
   }
 
+  def takeWhileViaUnfold[A](a:Stream[A],f: A => Boolean): Stream[A] = unfold(a) {
+    case cons(h,t) => { if(f(h)) {
+      Some((h,t))
+    } else None}
+    case empty => None
+  }
+
+  /**
+   * copied from github answer key
+   */
+  def zipWith[A,B,C](s1:Stream[A],s2: Stream[B])(f: (A,B) => C): Stream[C] = unfold(s1,s2) {
+
+    case (cons(h1,t1),cons(h2,t2)) => Some(f(h1,h2),(t1,t2))
+    case _ => None
+  }
+
 }
