@@ -39,7 +39,7 @@ class StreamSpec extends FlatSpec with Matchers{
   it should "create a fibonacci stream " in {
     val fibo = StreamUtils.fibs(1,0)
     val fiboList = fibo.take(10).toList
-    fiboList.foreach{el => print(el+" ,")}
+    //fiboList.foreach{el => print(el+" ,")}
   }
 
   it should "create a from via unfold " in {
@@ -81,4 +81,20 @@ class StreamSpec extends FlatSpec with Matchers{
     val sum = StreamUtils.zipWith(odds,evens)((e1,e2) => e1+e2)
     sum.toList should be (List(5,11,21))
   }
+
+//  it should "zip streams " in {
+//    val mbOdds = Stream(Some(3),None,Some(11))
+//    val mbEvens = Stream(None,Some(6),Some(10))
+//    val result = StreamUtils.zipAll(mbEvens,mbOdds)
+//    result.toList should be (List((Some(3),None),(None,Some(6)),(Some(11),Some(10))))
+//  }
+
+  it should "zip streams without unfold  " in {
+    val mbOdds = Stream(3)
+    val mbEvens = Stream(6,10,4)
+    val result = StreamUtils.zipAll2(mbOdds,mbEvens)
+    result.toList should be (List((Some(3),Some(6)),(None,Some(10)),(None,Some(4)),(None,None)))
+  }
 }
+
+

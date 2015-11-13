@@ -74,4 +74,29 @@ object StreamUtils {
     case _ => None
   }
 
+  /**
+   * ZipAll function should continue traversal as long as either stream has more elements.
+   * @param s1
+   * @param s2
+   * @tparam A
+   * @tparam B
+   * @return
+   */
+  def zipAll[A,B] (s1:Stream[A],s2:Stream[B]):Stream[(Option[A],Option[B])] = unfold(s1,s2) {
+
+    //case (empty,empty) => None
+    case (Stream.cons(h,t),empty) => Some((Some(h),None),(t,empty))
+    case (empty, cons(h,t)) => Some((None,Some(h)),(empty,t))
+    case (cons(h1,t1),cons(h2,t2)) => Some((Some(h1),Some(h2)),(t1,t2))
+
+  }
+
+  def zipAll2[A,B](s1:Stream[A],s2:Stream[B]):Stream[(Option[A],Option[B])] = (s1,s2) match {
+
+    case (cons(h1,t1),cons(h2,t2)) => cons((Some(h1),Some(h2)),zipAll2(t1,t2))
+    case (empty,cons(h,t)) => cons((None,Some(h)),zipAll2(empty,t))
+    case (cons(h,t),empty) => cons((Some(h),None),zipAll2(t,empty))
+    case _  => cons((None,None),Stream.empty)
+
+  }
 }
