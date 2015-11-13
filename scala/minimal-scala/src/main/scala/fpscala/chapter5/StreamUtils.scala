@@ -99,4 +99,21 @@ object StreamUtils {
     case _  => cons((None,None),Stream.empty)
 
   }
+
+  /**
+   * check if s1 is a prefix of s2
+   * @param s1
+   * @param s2
+   * @tparam A
+   * @return
+   */
+  def startsWith[A](s1:Stream[A],s2:Stream[A]):Boolean = ???
+
+  /**
+   * Given a stream , return a stream of stream of the suffixes
+   * Stream(1,2,3) ==> Stream(Stream(1,2,3),Stream(2,3),Stream(3),Stream())
+   * @tparam A
+   * @return
+   */
+  def tails[A]:(a:Stream[A]):Stream[Stream[A]] = ???
 }
