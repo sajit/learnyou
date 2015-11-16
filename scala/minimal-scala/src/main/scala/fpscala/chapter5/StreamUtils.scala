@@ -120,5 +120,8 @@ object StreamUtils {
    * @tparam A
    * @return
    */
-  def tails[A](a:Stream[A]):Stream[Stream[A]] = ???
+  def tails[A](a:Stream[A]):Stream[Stream[A]] = a match {
+    case cons(h,t) => tails(t) :+ a
+    case _ => Stream()
+  }
 }

@@ -105,6 +105,12 @@ class StreamSpec extends FlatSpec with Matchers{
     StreamUtils.startsWith(Stream(5,5),Stream(5,6)) should be (false)
   }
 
+  it should "create a stream of streams " in {
+    val str = Stream(1,2,3)
+    val result = StreamUtils.tails(str)
+    result.toList.foreach{ el => println(el)}
+    result.length should be (3)
+  }
 
 }
 
