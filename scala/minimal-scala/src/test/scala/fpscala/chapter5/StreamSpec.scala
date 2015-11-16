@@ -95,6 +95,17 @@ class StreamSpec extends FlatSpec with Matchers{
     val result = StreamUtils.zipAll2(mbOdds,mbEvens)
     result.toList should be (List((Some(3),Some(6)),(None,Some(10)),(None,Some(4)),(None,None)))
   }
+
+  it should "check if one is a prefix of another" in {
+    StreamUtils.startsWith(Stream(),Stream(4)) should be (true)
+    StreamUtils.startsWith(Stream(4),Stream()) should be (false)
+
+    StreamUtils.startsWith(Stream(4),Stream(4,5,6)) should be (true)
+
+    StreamUtils.startsWith(Stream(5,5),Stream(5,6)) should be (false)
+  }
+
+
 }
 
 

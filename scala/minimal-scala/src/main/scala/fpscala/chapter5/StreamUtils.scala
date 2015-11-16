@@ -107,7 +107,12 @@ object StreamUtils {
    * @tparam A
    * @return
    */
-  def startsWith[A](s1:Stream[A],s2:Stream[A]):Boolean = ???
+  def startsWith[A](s1:Stream[A],s2:Stream[A]):Boolean = (s1,s2) match {
+    case (cons(h1,t1),cons(h2,t2)) => if(h1.equals(h2)){startsWith(t1,t2)
+      } else false
+    case (cons(h,t),empty) => false
+    case (empty,_) => true
+  }
 
   /**
    * Given a stream , return a stream of stream of the suffixes
@@ -115,5 +120,5 @@ object StreamUtils {
    * @tparam A
    * @return
    */
-  def tails[A]:(a:Stream[A]):Stream[Stream[A]] = ???
+  def tails[A](a:Stream[A]):Stream[Stream[A]] = ???
 }

@@ -24,9 +24,7 @@ sealed trait Beither[+E,+A] {
 
   def map2[EE >:E,B,C](b:Beither[EE,B])(f:(A,B) => C):Beither[EE,C] = (this,b) match {
     case (_,Left(e)) => Left(e)
-
     case (Left(e),_) => Left(e)
-    case (Left(e1),Left(e2)) => Left(e1)
     case (Right(a1),Right(a2)) => Right(f(a1,a2))
   }
 
