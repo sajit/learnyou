@@ -1,11 +1,12 @@
 package fpscala.chapter5
 
+import fpscala.BaseSpec
 import org.scalatest.{FlatSpec, Matchers}
 
 /**
  * Created by sajit on 10/25/15.
  */
-class Chapter5Spec extends FlatSpec with Matchers{
+class Chapter5Spec extends BaseSpec{
 
   it should "take 2 elements of a stream" in {
     val str = XStream(4,51,4,5,1)
