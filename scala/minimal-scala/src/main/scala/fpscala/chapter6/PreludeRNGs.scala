@@ -24,4 +24,22 @@ object PreludeRNGs {
     }
   }
 
+  def intDouble(rng:RNG):((Int,Double),RNG) = {
+    val (anInt,nRng) = rng.nextInt
+    val (aDouble,nnRng) = double(nRng)
+    ((anInt,anInt.toDouble),nnRng)
+  }
+
+  def doubleInt(rng:RNG):((Double,Int),RNG) = {
+    val ((anInt,aDouble),nRng) = intDouble(rng)
+    ((aDouble,anInt),nRng)
+  }
+
+
+  def double3(rng:RNG): ((Double,Double,Double),RNG) = {
+    val (d1,nRng) = double(rng)
+    val (d2,n2Rng) = double(nRng)
+    val (d3,n3Rng) = double(n2Rng)
+    ((d1,d2,d3),n3Rng)
+  }
 }
