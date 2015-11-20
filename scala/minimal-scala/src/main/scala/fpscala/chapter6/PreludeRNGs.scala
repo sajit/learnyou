@@ -16,5 +16,12 @@ object PreludeRNGs {
     }
   }
 
+  def double(rng:RNG): (Double,RNG) = {
+    val tuple = nonNegativeInt(rng)
+    tuple._1 match {
+      case Int.MaxValue => (Int.MaxValue-1.toDouble/Int.MaxValue.toDouble,tuple._2)
+      case i => (i.toDouble/Int.MaxValue.toDouble,tuple._2)
+    }
+  }
 
 }

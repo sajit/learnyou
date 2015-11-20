@@ -33,5 +33,17 @@ class Chapter6Spec extends BaseSpec{
     Math.abs(Int.MinValue) should be < 0
   }
 
+  it should "create a double between 0 and 1 " in {
+    val rng:RNG = SimpleRNG(Random.nextLong())
+    val (d,nrng) = PreludeRNGs.double(rng)
+    val iterations:List[Int] = Range.inclusive(0,1000).toList
+    iterations.foldRight(nrng)((_,el) => {
+      val result = PreludeRNGs.double(el)
+      result._1 should be >= (0.0)
+      result._1 should be < (1.0)
+      result._2
+     }
+    )
 
+  }
 }
