@@ -9,7 +9,7 @@ import scala.util.Random
 object PreludeRNGs {
 
   def nonNegativeInt(rng: RNG): (Int, RNG) = {
-    val tuple = rng.nextInt;
+    val tuple = rng.nextInt
     tuple._1 match {
       case Int.MinValue => (Math.abs(tuple._1 + 1), tuple._2)
       case _ => (Math.abs(tuple._1), tuple._2)
@@ -41,5 +41,18 @@ object PreludeRNGs {
     val (d2,n2Rng) = double(nRng)
     val (d3,n3Rng) = double(n2Rng)
     ((d1,d2,d3),n3Rng)
+  }
+
+  def ints(count:Int)(rng:RNG):(List[Int],RNG) = {
+    def doInts(rem:Int,acc:(List[Int],RNG)):(List[Int],RNG) = {
+      if(rem <= 0){
+        acc
+      }
+      else {
+        val nextRandom = acc._2.nextInt
+        doInts(rem-1,(nextRandom._1 :: acc._1, nextRandom._2))
+      }
+    }
+    doInts(count,(List(),rng))
   }
 }
