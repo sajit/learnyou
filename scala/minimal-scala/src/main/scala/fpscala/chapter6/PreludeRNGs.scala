@@ -67,5 +67,18 @@ object PreludeRNGs {
     (f(a),rng2)
   }
 
-  def nonNegativeEven:Rand[Int]  = map(nonNegativeEven) {i => if(i%2 ==0) {i}  else {i-1}}
+  def nonNegativeEven:Rand[Int]  = map(nonNegativeInt) {i => if(i%2 ==0) {i}  else {i-1}}
+
+  def elegantDouble : Rand[Double] = map(nonNegativeInt) { i => if(i == Int.MaxValue)
+    Int.MaxValue - 1 else i
+
+  }
+
+  def moreElegantDouble : Rand[Double] = rng => double(rng)
+
+  def map2[A,B,C](action1:Rand[A],action2:Rand[B])(f: (A,B) => C):Rand[C] = rng => {
+    val (a,rng2) = action1(rng)
+    val (b,rng3) = action2(rng2)
+    (f(a,b),rng3)
+  }
 }

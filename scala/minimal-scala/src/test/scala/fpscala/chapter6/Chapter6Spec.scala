@@ -1,6 +1,7 @@
 package fpscala.chapter6
 
 import fpscala.BaseSpec
+import fpscala.chapter6.PreludeRNGs.Rand
 import scala.util.Random
 
 /**
@@ -44,6 +45,17 @@ class Chapter6Spec extends BaseSpec{
       result._2
      }
     )
+
+  }
+
+  it should "a supposedly more elegant double " in {
+    val rng:RNG = SimpleRNG(Random.nextLong())
+    val rand1 = PreludeRNGs.moreElegantDouble
+    val result:(Double,RNG) = rand1{rng}
+    result._1 should be >= (0.0)
+    result._1 should be < (1.0)
+
+
 
   }
 }
