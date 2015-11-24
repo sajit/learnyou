@@ -59,6 +59,7 @@ object PreludeRNGs {
   type Rand[+A] = RNG => (A,RNG)
 
   val int:Rand[Int] = _.nextInt
+  val doublex:Rand[Double] = {rng => double(rng)}
 
   def unit[A](a:A):Rand[A] = rng => (a,rng)
 
@@ -81,4 +82,32 @@ object PreludeRNGs {
     val (b,rng3) = action2(rng2)
     (f(a,b),rng3)
   }
+
+  def both[A,B](ra:Rand[A],rb:Rand[B]):Rand[(A,B)] = map2(ra,rb)((_,_))
+
+  val randIntDouble: Rand[(Int,Double)] = both(int,doublex)
+
+  val randDoubleInt:Rand[(Double,Int)] = both(doublex,int)
+
+  /**
+   * Copied from github
+   */
+  // In `sequence`, the base case of the fold is a `unit` action that returns
+  // the empty list. At each step in the fold, we accumulate in `acc`
+  // and `f` is the current element in the list.
+  // `map2(f, acc)(_ :: _)` results in a value of type `Rand[List[A]]`
+  // We map over that to prepend (cons) the element onto the accumulated list.
+  //
+  // We are using `foldRight`. If we used `foldLeft` then the values in the
+  // resulting list would appear in reverse order. It would be arguably better
+  // to use `foldLeft` followed by `reverse`. What do you think?
+  def sequence[A](fs: List[Rand[A]]): Rand[List[A]] =
+    fs.foldRight(unit(List[A]()))((f, acc) => map2(f, acc)(_ :: _))
+
+  // It's interesting that we never actually need to talk about the `RNG` value
+  // in `sequence`. This is a strong hint that we could make this function
+  // polymorphic in that type.
+
+  def _ints(count: Int): Rand[List[Int]] =
+    sequence(List.fill(count)(int))
 }
