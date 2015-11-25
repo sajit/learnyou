@@ -58,4 +58,19 @@ class Chapter6Spec extends BaseSpec{
 
 
   }
+
+  it should "generate a non-negative int less than" in {
+    val rng:RNG = SimpleRNG(Random.nextLong())
+
+
+    val iterations:List[Int] = Range.inclusive(0,1000).toList
+    iterations.foldRight(rng)((_,el) => {
+      val result = PreludeRNGs.nonNegativeLessThan(6)(rng)
+
+      result._1 should be >= (0)
+      result._1 should be < (6)
+      result._2
+    }
+    )
+  }
 }

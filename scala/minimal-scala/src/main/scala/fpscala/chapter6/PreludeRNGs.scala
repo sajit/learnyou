@@ -110,4 +110,14 @@ object PreludeRNGs {
 
   def _ints(count: Int): Rand[List[Int]] =
     sequence(List.fill(count)(int))
+
+  def flatMap[A,B] (f:Rand[A])(g: A => Rand[B]):Rand[B] = { rng =>
+    val (a,rng2) = f(rng)
+    g(a)(rng2)
+
+  }
+
+  def nonNegativeLessThan(n:Int):Rand[Int] = flatMap(nonNegativeInt){ i =>
+    unit(i%n)
+  }
 }
