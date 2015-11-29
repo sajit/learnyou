@@ -31,17 +31,29 @@ case class Machine(locked: Boolean, candies: Int, coins: Int) {
 
     }
   }
+
+
 }
 object CandyShop {
   type State[S,+A] = S => (A,S)
   val machine = Machine(true,10,0)
 
-  val initState: State[Machine, (Int, Int)] = ???
 
-  def simulateMachine(inputs:List[Input]):State[Machine, (Int,Int)] = {
-    def doSimulateMachine(inputs:List[Input],currentState:State[Machine,(Int,Int)]):State[Machine,(Int,Int)] = ???
+  def simulateMachine(inputs: List[Input], initState: Machine): Machine = {
+    def doSimulateMachine(inputs: List[Input], machineState: Machine): Machine = {
+      if (inputs.isEmpty) {
+        println("End simulation ****")
+        machineState
+      }
+      else {
+        val in = inputs.head
+        doSimulateMachine(inputs.tail, machineState.transition(in))
+      }
+    }
+    println("Starting simulation *****")
     doSimulateMachine(inputs,initState)
   }
+
 
   def printState(machine:Machine) = {
     println("{Locked?:" + machine.locked+",candies:"+machine.candies+",coins:"+machine.coins+"}")

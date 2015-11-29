@@ -39,4 +39,14 @@ class CandyShopSpec extends BaseSpec {
     newState.coins should be(0)
     newState.candies should be(9)
   }
+
+  it should "iterate over a list of inputs " in {
+    val init = Machine(true, 10, 4)
+    val inputs = List(Turn, Coin, Coin, Turn, Coin, Turn)
+    val finalState: Machine = CandyShop.simulateMachine(inputs, init)
+    finalState.coins should be(7)
+    finalState.candies should be(8)
+    finalState.locked should be(true)
+    //fina
+  }
 }
