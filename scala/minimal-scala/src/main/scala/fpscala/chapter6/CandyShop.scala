@@ -37,7 +37,12 @@ case class Machine(locked: Boolean, candies: Int, coins: Int) {
 object CandyShop {
   type State[S,+A] = S => (A,S)
   val machine = Machine(true,10,0)
+  val lockedTurn: State[Machine, (Int, Int)] = { machine => ((machine.candies, machine.coins), machine) }
+  val unlockedCoin: State[Machine, (Int, Int)] = { machine => (
+    (machine.candies, machine.coins + 1), Machine(false, machine.candies, machine.coins + 1))
+  }
 
+  def altSimulation(inputs: List[Input]): State[Machine, (Int, Int)] = ???
 
   def simulateMachine(inputs: List[Input], initState: Machine): Machine = {
     def doSimulateMachine(inputs: List[Input], machineState: Machine): Machine = {
