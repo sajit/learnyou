@@ -1,16 +1,14 @@
 package fpscala.chapter7
 
+import java.util.concurrent.{ExecutorService, Future}
+
 /**
- * Created by sajit.kunnumkal on 11/30/2015.
+ * Created by sajit on 12/2/15.
  */
-class Par[+A] {
-  def get[A](a: Par[A]): A = ???
+object Par {
 
-  def map2[A](a1: Par[A], a2: Par[A])(f: (A, A) => A): Par[A] = ???
+  type Par[A] = ExecutorService => Future[A]
 
-  def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
+  def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
 
-  def unit[A](a: A): Par[A] = ???
-
-  def fork[A](a: => Par[A]) = ???
 }
