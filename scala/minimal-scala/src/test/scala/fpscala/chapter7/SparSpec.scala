@@ -34,8 +34,19 @@ class SparSpec extends BaseSpec {
       val parC: Par[Int] = Par.map3(aPar, bPar) { (x, y) => x + y}
       Par.run(es)(parC).get()
     }
+  }
 
+  it should "calculate asynchronously " in {
+    val f: (String => Int) = { x => Thread.sleep(2000)
+      println("Slept for 2 secs")
+      x.length
+    }
+    val bPar: Par[Int] = Par.asyncF(f)("hello")
+    println("Immediately after async call")
+    val es = Executors.newFixedThreadPool(2)
+    bPar(es).get() should be(5)
 
   }
+
 
 }
