@@ -19,6 +19,12 @@ object Par {
     override def call(): A = a(es).get
   })
 
+  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+    val af = a(es)
+    val bf = b(es)
+    UnitFuture(f(af.get(), bf.get()))
+  }
+
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
 
