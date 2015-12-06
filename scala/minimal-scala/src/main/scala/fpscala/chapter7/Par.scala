@@ -46,6 +46,17 @@ object Par {
     override def call(): A = a(es).get
   })
 
+  /**
+   * folds over a list of Pars. and does something.. meh.. compiles atleast.
+   * @param ps
+   * @tparam A
+   * @return
+   */
+
+  def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
+    map2(aParElement, parOfAList)((element, acc) => element :: acc))
+
+
 
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
