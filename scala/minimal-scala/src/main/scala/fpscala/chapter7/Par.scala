@@ -30,13 +30,10 @@ object Par {
 
   def map[A, B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
 
-  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
-    val af = a(es)
-    val bf = b(es)
-    UnitFuture(f(af.get(), bf.get()))
+  def parMap[A, B](ps: List[A])(f: A => B): Par[List[B]] = fork {
+    val bFutures: List[Par[B]] = ps.map(asyncF(f))
+    sequence(bFutures)
   }
-
-  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
 
   def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
 
@@ -56,7 +53,13 @@ object Par {
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
 
+  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+    val af = a(es)
+    val bf = b(es)
+    UnitFuture(f(af.get(), bf.get()))
+  }
 
+  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
 
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
