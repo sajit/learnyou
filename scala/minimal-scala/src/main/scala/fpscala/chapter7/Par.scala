@@ -61,6 +61,8 @@ object Par {
 
   def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
 
+  def parFilter[A](as: List[A])(f: A => Boolean): Par[List[A]] = ???
+
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
 
