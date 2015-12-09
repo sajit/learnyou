@@ -37,11 +37,18 @@ object Par {
 
   def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
 
+  def parFilter1[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    val filtered: List[Par[A]] = as.map { el => if (f(el)) lazyUnit(List(el)) else lazyUnit(List())}.flatten
+    sequence(filtered)
+  }
+
   def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 
   def fork[A](a: => Par[A]): Par[A] = es => es.submit(new Callable[A] {
     override def call(): A = a(es).get
   })
+
+  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
 
   /**
    * folds over a list of Pars. and does something.. meh.. compiles atleast.
@@ -58,10 +65,6 @@ object Par {
     val bf = b(es)
     UnitFuture(f(af.get(), bf.get()))
   }
-
-  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
-
-  def parFilter[A](as: List[A])(f: A => Boolean): Par[List[A]] = ???
 
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
