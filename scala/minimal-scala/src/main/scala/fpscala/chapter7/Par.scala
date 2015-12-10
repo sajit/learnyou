@@ -30,17 +30,43 @@ object Par {
 
   def map[A, B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
 
+  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
+
+  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+    val af = a(es)
+    val bf = b(es)
+    UnitFuture(f(af.get(), bf.get()))
+  }
+
   def parMap[A, B](ps: List[A])(f: A => B): Par[List[B]] = fork {
     val bFutures: List[Par[B]] = ps.map(asyncF(f))
     sequence(bFutures)
   }
 
-  def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
-
   def parFilter1[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
     val filtered: List[Par[A]] = as.map { el => if (f(el)) lazyUnit(List(el)) else lazyUnit(List())}.flatten
     sequence(filtered)
   }
+
+  def parFilterNot[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    val lpl: List[Par[List[A]]] = as map (asyncF(el => if (!f(el)) List(el) else List()))
+    sequence(lpl.flatten)
+  }
+
+  /**
+   * From github source
+   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
+   * @param as
+   * @param f
+   * @tparam A
+   * @return
+   */
+  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    val lpl: List[Par[List[A]]] = as map (asyncF(el => if (f(el)) List(el) else List()))
+    sequence(lpl.flatten)
+  }
+
+  def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
 
   def lazyUnit[A](a: => A): Par[A] = fork(unit(a))
 
@@ -57,27 +83,6 @@ object Par {
 
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
-
-  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
-
-  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
-    val af = a(es)
-    val bf = b(es)
-    UnitFuture(f(af.get(), bf.get()))
-  }
-
-  /**
-   * From github source
-   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
-   * @param as
-   * @param f
-   * @tparam A
-   * @return
-   */
-  def parFilter1[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-    val lpl: List[Par[List[A]]] = as map (asyncF(el => if (f(el)) List(el) else List()))
-    sequence(lpl.flatten)
-  }
 
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
