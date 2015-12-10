@@ -49,21 +49,18 @@ object Par {
   }
 
   def parFilterNot[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-    val lpl: List[Par[List[A]]] = as map (asyncF(el => if (!f(el)) List(el) else List()))
+    doParFilter(as)(f)(true)
+  }
+
+  private def doParFilter[A](as: List[A])(f: A => Boolean)(isNot: Boolean): Par[List[A]] = {
+    val lpl: List[Par[List[A]]] = as map (asyncF(el => if (not(f, el, isNot)) List(el) else List()))
     sequence(lpl.flatten)
   }
 
-  /**
-   * From github source
-   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
-   * @param as
-   * @param f
-   * @tparam A
-   * @return
-   */
-  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-    val lpl: List[Par[List[A]]] = as map (asyncF(el => if (f(el)) List(el) else List()))
-    sequence(lpl.flatten)
+  private def not[A](f: A => Boolean, a: A, isNot: Boolean) = if (isNot) {
+    !f(a)
+  } else {
+    f(a)
   }
 
   def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
@@ -83,6 +80,18 @@ object Par {
 
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
+
+  /**
+   * From github source
+   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
+   * @param as
+   * @param f
+   * @tparam A
+   * @return
+   */
+  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    doParFilter(as)(f)(false)
+  }
 
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
