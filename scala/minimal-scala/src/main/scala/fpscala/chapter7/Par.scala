@@ -28,24 +28,9 @@ object Par {
     }
   }
 
-  def map[A, B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
-
-  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
-
-  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
-    val af = a(es)
-    val bf = b(es)
-    UnitFuture(f(af.get(), bf.get()))
-  }
-
   def parMap[A, B](ps: List[A])(f: A => B): Par[List[B]] = fork {
     val bFutures: List[Par[B]] = ps.map(asyncF(f))
     sequence(bFutures)
-  }
-
-  def parFilter1[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-    val filtered: List[Par[A]] = as.map { el => if (f(el)) lazyUnit(List(el)) else lazyUnit(List())}.flatten
-    sequence(filtered)
   }
 
   def parFilterNot[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
@@ -54,14 +39,30 @@ object Par {
 
   private def doParFilter[A](as: List[A])(f: A => Boolean)(isNot: Boolean): Par[List[A]] = {
     val lpl: List[Par[List[A]]] = as map (asyncF(el => if (not(f, el, isNot)) List(el) else List()))
-    sequence(lpl.flatten)
+    map(sequence(lpl))(_.flatten)
   }
+
+  def map[A, B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
 
   private def not[A](f: A => Boolean, a: A, isNot: Boolean) = if (isNot) {
     !f(a)
   } else {
     f(a)
   }
+
+  //  def parSum(as:List[Int]):Par[Int] = {
+  //    if(as.length <= 1){
+  //      unit(as.headOption.getOrElse(0))
+  //    }
+  //    else {
+  //      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
+  //      val f:(Int,Int) => Int = {(x,y) => x + y}
+  //      val parL:Par[Int] = asyncF(parSum)(l)
+  //
+  //      val parF = map2(asyncF(parSum)(l), asyncF(parSum)(r))(f)
+  //
+  //    }
+  //  }
 
   def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
 
@@ -80,6 +81,14 @@ object Par {
 
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
+
+  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
+
+  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+    val af = a(es)
+    val bf = b(es)
+    UnitFuture(f(af.get(), bf.get()))
+  }
 
   /**
    * From github source
