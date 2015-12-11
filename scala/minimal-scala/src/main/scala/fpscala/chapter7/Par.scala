@@ -37,6 +37,31 @@ object Par {
     doParFilter(as)(f)(true)
   }
 
+  def parSum(as: List[Int]): Par[Int] = {
+    if (as.length <= 1) {
+      unit(as.headOption.getOrElse(0))
+    }
+    else {
+      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
+      val f: (Par[Int], Par[Int]) => Int = ???
+
+      map2(asyncF(parSum)(l), asyncF(parSum)(r))(f)
+
+    }
+  }
+
+  /**
+   * From github source
+   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
+   * @param as
+   * @param f
+   * @tparam A
+   * @return
+   */
+  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    doParFilter(as)(f)(false)
+  }
+
   private def doParFilter[A](as: List[A])(f: A => Boolean)(isNot: Boolean): Par[List[A]] = {
     val lpl: List[Par[List[A]]] = as map (asyncF(el => if (not(f, el, isNot)) List(el) else List()))
     map(sequence(lpl))(_.flatten)
@@ -49,20 +74,6 @@ object Par {
   } else {
     f(a)
   }
-
-  //  def parSum(as:List[Int]):Par[Int] = {
-  //    if(as.length <= 1){
-  //      unit(as.headOption.getOrElse(0))
-  //    }
-  //    else {
-  //      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
-  //      val f:(Int,Int) => Int = {(x,y) => x + y}
-  //      val parL:Par[Int] = asyncF(parSum)(l)
-  //
-  //      val parF = map2(asyncF(parSum)(l), asyncF(parSum)(r))(f)
-  //
-  //    }
-  //  }
 
   def asyncF[A, B](f: A => B): A => Par[B] = { a => lazyUnit(f(a)) }
 
@@ -88,18 +99,6 @@ object Par {
     val af = a(es)
     val bf = b(es)
     UnitFuture(f(af.get(), bf.get()))
-  }
-
-  /**
-   * From github source
-   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
-   * @param as
-   * @param f
-   * @tparam A
-   * @return
-   */
-  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-    doParFilter(as)(f)(false)
   }
 
   private case class UnitFuture[A](get: A) extends Future[A] {
