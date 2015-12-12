@@ -49,4 +49,9 @@ class SparSpec extends BaseSpec {
   }
 
 
+  it should "take some executor service and calculate sum " in {
+    val es = Executors.newFixedThreadPool(3)
+    val fSum = Par.parSum(List(3, 4, 5))
+    fSum(es).get() should be(12)
+  }
 }

@@ -13,6 +13,7 @@ import scala.util._
 object Par {
 
   type Par[A] = ExecutorService => Future[A]
+  val globEs = Executors.newFixedThreadPool(1)
 
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
 
@@ -37,37 +38,18 @@ object Par {
     doParFilter(as)(f)(true)
   }
 
-  def parSum(as: List[Int]): Par[Int] = {
-    if (as.length <= 1) {
-      unit(as.headOption.getOrElse(0))
-    }
-    else {
-      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
-      val f: (Par[Int], Par[Int]) => Int = ???
-
-      map2(asyncF(parSum)(l), asyncF(parSum)(r))(f)
-
-    }
-  }
-
-  /**
-   * From github source
-   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
-   * @param as
-   * @param f
-   * @tparam A
-   * @return
-   */
-  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
-    doParFilter(as)(f)(false)
-  }
-
   private def doParFilter[A](as: List[A])(f: A => Boolean)(isNot: Boolean): Par[List[A]] = {
     val lpl: List[Par[List[A]]] = as map (asyncF(el => if (not(f, el, isNot)) List(el) else List()))
     map(sequence(lpl))(_.flatten)
   }
 
   def map[A, B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
+
+  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+    val af = a(es)
+    val bf = b(es)
+    UnitFuture(f(af.get(), bf.get()))
+  }
 
   private def not[A](f: A => Boolean, a: A, isNot: Boolean) = if (isNot) {
     !f(a)
@@ -83,6 +65,8 @@ object Par {
     override def call(): A = a(es).get
   })
 
+  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
+
   /**
    * folds over a list of Pars. and does something.. meh.. compiles atleast.
    * @param ps
@@ -93,12 +77,40 @@ object Par {
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
 
-  def unit[A](a: A): Par[A] = (es: ExecutorService) => UnitFuture(a)
+  def parSum(as: List[Int]): Par[Int] = {
+    if (as.length <= 1) {
+      unit(as.headOption.getOrElse(0))
+    }
+    else {
+      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
+      val lPar: Par[Int] = parSum(l)
+      val rPar: Par[Int] = parSum(r)
+      map2(lPar, rPar)((e1, e2) => e1 + e2)
+    }
+  }
 
-  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
-    val af = a(es)
-    val bf = b(es)
-    UnitFuture(f(af.get(), bf.get()))
+  def parSum1(as: List[Int]): Par[Int] = {
+    if (as.length <= 1) {
+      unit(as.headOption.getOrElse(0))
+    }
+    else {
+      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
+      val lPar: Par[Int] = Par.run(globEs)(asyncF(parSum1)(l)).get()
+      val rPar: Par[Int] = Par.run(globEs)(asyncF(parSum1)(r)).get()
+      map2(lPar, rPar)((e1, e2) => e1 + e2)
+    }
+  }
+
+  /**
+   * From github source
+   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
+   * @param as
+   * @param f
+   * @tparam A
+   * @return
+   */
+  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    doParFilter(as)(f)(false)
   }
 
   private case class UnitFuture[A](get: A) extends Future[A] {
