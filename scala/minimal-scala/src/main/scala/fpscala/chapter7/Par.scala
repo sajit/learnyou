@@ -113,6 +113,8 @@ object Par {
     doParFilter(as)(f)(false)
   }
 
+  def parExists[A](as: List[A])(f: A => Boolean): Par[Boolean] = ???
+
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
 
