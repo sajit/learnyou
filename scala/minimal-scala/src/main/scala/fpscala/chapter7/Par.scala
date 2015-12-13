@@ -113,7 +113,32 @@ object Par {
     doParFilter(as)(f)(false)
   }
 
-  def parExists[A](as: List[A])(f: A => Boolean): Par[Boolean] = ???
+  def parSum(as: List[Int]): Par[Int] = {
+    if (as.length <= 1) {
+      unit(as.headOption.getOrElse(0))
+    }
+    else {
+      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
+      val f: (Par[Int], Par[Int]) => Int = ???
+
+      map2(asyncF(parSum)(l), asyncF(parSum)(r))(f)
+
+    }
+  }
+
+  def parExists[A](as: List[A])(f: A => Boolean): Par[Boolean] = map(parFilter2(as)(f))(aList => !aList.isEmpty)
+
+  /**
+   * From github source
+   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
+   * @param as
+   * @param f
+   * @tparam A
+   * @return
+   */
+  def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = {
+    doParFilter(as)(f)(false)
+  }
 
   private case class UnitFuture[A](get: A) extends Future[A] {
     def isDone = true
