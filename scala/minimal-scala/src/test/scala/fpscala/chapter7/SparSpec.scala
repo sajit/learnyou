@@ -48,6 +48,12 @@ class SparSpec extends BaseSpec {
 
   }
 
+  it should "calculate asynchronously exists " in {
+    val boolPar = Par.parExists(List(4, 5, 6, 7))(el => el % 5 == 0)
+    val es = Executors.newFixedThreadPool(1)
+    Par.run(es)(boolPar).get() should be(true)
+  }
+
 
   it should "take some executor service and calculate sum " in {
     val es = Executors.newFixedThreadPool(3)
