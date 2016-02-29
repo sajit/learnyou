@@ -12,11 +12,7 @@ object PropTest {
 
   def forAll[A](A: Gen[A])(f: A => Boolean): Prop = ???
 
-  trait Prop {
-    def check: Unit
-
-    def &&(p: Prop): Prop = ???
-  }
+  
 
   case class Gen[A](sample: State[RNG, A])
 
