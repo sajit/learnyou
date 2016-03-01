@@ -1,7 +1,5 @@
 package fpscala.chapter8
 
-import fpscala.chapter6.CandyShop.State
-import fpscala.chapter6.RNG
 
 /**
  * Created by sajit on 12/17/15.
@@ -13,9 +11,7 @@ object PropTest {
   def forAll[A](A: Gen[A])(f: A => Boolean): Prop = ???
 
   
-
-  case class Gen[A](sample: State[RNG, A])
   
-  def choose(start:Int, stopExclusive:Int):Gen[Int] = ???
+  
 
 }
