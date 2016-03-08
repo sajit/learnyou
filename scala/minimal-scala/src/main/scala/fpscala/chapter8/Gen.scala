@@ -16,5 +16,7 @@ object Gen {
       Gen(State(rng => PreludeRNGs.nonNegativeInt(rng) match {
     case (n,rng2) => (start + n % (stopExclusive-start), rng2)
   }))
-    
+ 
+  def unit[A] (a: => A):Gen[A] = 
+    Gen(State(rng => (a,rng)))
 }

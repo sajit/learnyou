@@ -24,4 +24,12 @@ class JphmSpec extends BaseSpec {
     anInt should be < (8)
   }
   
+  it should "always get a value" in {
+    val simpleRng = SimpleRNG(100)
+    val genNum:Gen[Int] = Gen.unit(3)
+    val foo = genNum.sample.run
+    val (anInt,aRng) = foo.apply(simpleRng)
+    anInt should be (3)
+  }
+  
 }
