@@ -19,4 +19,14 @@ object Gen {
  
   def unit[A] (a: => A):Gen[A] = 
     Gen(State(rng => (a,rng)))
+  
+    def boolean:Gen[Boolean] = Gen(State(rng => (System.currentTimeMillis()%2==0,rng)))
+    
+    /**
+     * From answerkey
+     */
+    def unit2[A](a: => A): Gen[A] = Gen(State.unit(a))
+   
+    
+    def listOfN[A] (n:Int,g:Gen[A]):Gen[List[A]] = ???
 }
