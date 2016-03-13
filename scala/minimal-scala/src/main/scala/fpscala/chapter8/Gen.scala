@@ -2,8 +2,6 @@ package fpscala.chapter8
 
 
 
-import fpscala.chapter6.RNG
-import fpscala.chapter6.PreludeRNGs
 
 
 case class Gen[A](sample: State[RNG, A])
@@ -13,7 +11,7 @@ object Gen {
    convenient, since it requires us to manually thread the `RNG` through the
    computation. */
   def choose2(start: Int, stopExclusive: Int): Gen[Int] = 
-      Gen(State(rng => PreludeRNGs.nonNegativeInt(rng) match {
+      Gen(State(rng => RNG.nonNegativeInt(rng) match {
     case (n,rng2) => (start + n % (stopExclusive-start), rng2)
   }))
  
@@ -27,6 +25,13 @@ object Gen {
      */
     def unit2[A](a: => A): Gen[A] = Gen(State.unit(a))
    
-    
-    def listOfN[A] (n:Int,g:Gen[A]):Gen[List[A]] = ???
+    /**
+     * Generates lists of length n using the generator g 
+     */
+    def listOfN[A] (n:Int,g:Gen[A]):Gen[List[A]] = {
+      
+      Gen(State(rng => generateRandomList(n,rng)))
+  }
+  
+    def generateRandomList[A](n:Int,rng:RNG):(List[A],RNG) = ???
 }

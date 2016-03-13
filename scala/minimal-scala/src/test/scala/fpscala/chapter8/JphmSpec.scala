@@ -1,6 +1,6 @@
 package fpscala.chapter8
 
-import fpscala.chapter6.SimpleRNG
+
 import fpscala.BaseSpec
 class JphmSpec extends BaseSpec { 
   
@@ -16,8 +16,10 @@ class JphmSpec extends BaseSpec {
     prop1.check should be(true)
   }
   
+  val simpleRng = RNG.Simple(100)
+  
   it should "choose a number less than second arg" in {
-    val simpleRng = SimpleRNG(100)
+    
     val genNum:Gen[Int] = Gen.choose2(1, 8)
     val foo = genNum.sample.run
     val (anInt,aRng) = foo.apply(simpleRng)
@@ -25,7 +27,6 @@ class JphmSpec extends BaseSpec {
   }
   
   it should "always get a value" in {
-    val simpleRng = SimpleRNG(100)
     val genNum:Gen[Int] = Gen.unit(3)
     val foo = genNum.sample.run
     val (anInt,aRng) = foo.apply(simpleRng)
