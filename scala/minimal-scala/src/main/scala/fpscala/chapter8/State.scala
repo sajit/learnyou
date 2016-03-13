@@ -1,5 +1,8 @@
 package fpscala.chapter8
 
+/**
+ * Has a single method that returns a tuple
+ */
 trait RNG {
   def nextInt: (Int, RNG) // Should generate a random `Int`. We'll later define other functions in terms of `nextInt`.
 }
@@ -159,6 +162,7 @@ object RNG {
 }
 import State._
 
+//takes a parameter which is a function from S => (A,S)
 case class State[S, +A](run: S => (A, S)) {
   def map[B](f: A => B): State[S, B] =
     flatMap(a => unit(f(a)))

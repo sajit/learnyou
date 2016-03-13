@@ -28,10 +28,18 @@ object Gen {
     /**
      * Generates lists of length n using the generator g 
      */
-    def listOfN[A] (n:Int,g:Gen[A]):Gen[List[A]] = {
-      
-      Gen(State(rng => generateRandomList(n,rng)))
-  }
+    def listOfN[A] (n:Int,g:Gen[A]):Gen[List[A]] = Gen(State.sequence(List.fill(n)(g.sample)))
   
-    def generateRandomList[A](n:Int,rng:RNG):(List[A],RNG) = ???
+    def listOfN2[A] (n:Int,g:Gen[A]):Gen[List[A]] = Gen(State.sequence(getStateList(n,g,List())))
+    
+    def getStateList[A](n:Int,g:Gen[A],soFar:List[State[RNG,A]]):List[State[RNG,A]] = {
+    if(n<=0){
+      soFar
+    }
+    else{
+      val curr = g.sample
+      getStateList(n-1,g,curr :: soFar)
+    }
+    
+  }
 }

@@ -33,4 +33,13 @@ class JphmSpec extends BaseSpec {
     anInt should be (3)
   }
   
+  it should "generate a list of length n" in {
+    val g =  Gen.choose2(0,3)
+    val listGen = Gen.listOfN2(5, g)
+    val foo = listGen.sample.run
+    val result = foo.apply(simpleRng)
+    result._1.length should be(5)
+    result._1.foreach { x => x should be < (3) }
+  }
+  
 }
