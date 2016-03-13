@@ -1,10 +1,11 @@
 package fpscala.chapter8
 
-
-
-
-
-case class Gen[A](sample: State[RNG, A])
+case class Gen[A](sample: State[RNG, A]) {
+  def choose2(start: Int, stopExclusive: Int): Gen[Int] = 
+      Gen(State(rng => RNG.nonNegativeInt(rng) match {
+    case (n,rng2) => (start + n % (stopExclusive-start), rng2)
+  }))
+}
 object Gen {
  
     /* We could write this as an explicit state action, but this is far less
@@ -42,4 +43,9 @@ object Gen {
     }
     
   }
+  def longStringGen:State[RNG,String] = State(rng => ("Hello",rng))
+  /**
+   * Generate a list of strings of length 5 all of minLength
+   */
+  def largeStringsList(minLength:Int):Gen[List[String]] = Gen(State.sequence(List.fill(5)(longStringGen)))
 }

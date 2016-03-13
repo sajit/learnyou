@@ -42,4 +42,13 @@ class JphmSpec extends BaseSpec {
     result._1.foreach { x => x should be < (3) }
   }
   
+  it should "generate a 5 element list with hellos" in {
+    val listS = Gen.largeStringsList(5)
+    val foo = listS.sample.run
+    val (rlist,rng) = foo.apply(simpleRng)
+    rlist.length should be (5)
+    rlist.foreach(word => word should be ("Hello"))
+    
+  }
+  
 }
