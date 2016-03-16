@@ -1,5 +1,6 @@
 package fpscala.chapter8
 
+import scala.util.Random
 /**
  * Has a single method that returns a tuple
  */
@@ -18,6 +19,8 @@ object RNG {
       (n, nextRNG) // The return value is a tuple containing both a pseudo-random integer and the next `RNG` state.
     }
   }
+  
+
 
   // We need to be quite careful not to skew the generator.
   // Since `Int.Minvalue` is 1 smaller than `-(Int.MaxValue)`,

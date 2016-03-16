@@ -1,4 +1,4 @@
-import com.example.Arsenal
+import com.example._
 import org.scalatest.{Matchers, FlatSpec}
 
 /**
@@ -15,5 +15,17 @@ class MySpec  extends FlatSpec with Matchers {
     val el = List(3.5, 4.6)
     Arsenal.dToString(el) should be (List("3.5","4.6"))
   }
+  
+    val foo = Foo("mouse")
+    it should "reverse" in {
+      foo.reverse() should be ("esuom")
+    }
+    
+    it should "concat" in {
+      foo.concat("mickey") should be ("mousemickey")
+    }
+    
 
+  
+  
 }
