@@ -1,5 +1,6 @@
 import com.example.Arsenal
 import org.scalatest.{Matchers, FlatSpec}
+import com.example.Foo
 
 /**
  * Created by sajit on 6/14/15.
@@ -16,4 +17,8 @@ class MySpec  extends FlatSpec with Matchers {
     Arsenal.dToString(el) should be (List("3.5","4.6"))
   }
 
+  "JPHM" should "always work" in {
+    val foo = Foo("nameds")
+    foo.transform() should be ("NAMEDS")
+  }
 }

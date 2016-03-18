@@ -5,6 +5,8 @@ case class Gen[A](sample: State[RNG, A]) {
       Gen(State(rng => RNG.nonNegativeInt(rng) match {
     case (n,rng2) => (start + n % (stopExclusive-start), rng2)
   }))
+  
+  def flatMap[B](f:A=>Gen[B]):Gen[B] = ???
 }
 object Gen {
  
