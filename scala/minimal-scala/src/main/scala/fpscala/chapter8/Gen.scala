@@ -50,4 +50,7 @@ object Gen {
    * Generate a list of strings of length 5 all of minLength
    */
   def largeStringsList(minLength:Int):Gen[List[String]] = Gen(State.sequence(List.fill(5)(longStringGen)))
+  
+  
+  def listOfNv2[A] (n:Int,g:Gen[A]):Gen[List[A]] = ???
 }
