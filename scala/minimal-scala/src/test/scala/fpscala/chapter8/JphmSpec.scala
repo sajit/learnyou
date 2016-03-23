@@ -51,4 +51,15 @@ class JphmSpec extends BaseSpec {
     
   }
   
+  it should "flatMap a generator of Int to Boolean" in {
+    val genInt = Gen.unit(3)
+    val fm1:(Int => Gen[Boolean]) = { x => Gen.unit(x%2 != 0)}
+    val foo = genInt.flatMap(fm1).sample.run
+    val (aBool,aRng) = foo.apply(simpleRng)
+    aBool should be (true)
+    val genInt1 = Gen.unit(4)
+    val (bBool,bRng) = genInt1.flatMap(fm1).sample.run.apply(simpleRng)
+    bBool should be (false)
+  }
+  
 }

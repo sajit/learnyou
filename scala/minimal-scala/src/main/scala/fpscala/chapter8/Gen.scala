@@ -6,7 +6,7 @@ case class Gen[A](sample: State[RNG, A]) {
     case (n,rng2) => (start + n % (stopExclusive-start), rng2)
   }))
   
-  def flatMap[B](f:A=>Gen[B]):Gen[B] = ???
+  def flatMap[B](f:A=>Gen[B]):Gen[B] = Gen(sample.flatMap(a => f(a).sample))
 }
 object Gen {
  
