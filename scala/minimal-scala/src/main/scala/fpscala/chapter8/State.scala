@@ -175,6 +175,8 @@ case class State[S, +A](run: S => (A, S)) {
     val (a, s1) = run(s)
     f(a).run(s1)
   })
+  
+  
 }
 
 object State {
