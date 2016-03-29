@@ -120,4 +120,12 @@ object PreludeRNGs {
   def nonNegativeLessThan(n:Int):Rand[Int] = flatMap(nonNegativeInt){ i =>
     unit(i%n)
   }
+  
+  /**
+   * Exercise 6.7 revisit 
+   */
+  def mySequence[A](fs:List[Rand[A]]):Rand[List[A]] = fs.foldLeft(unit(List[A]()))((soFar,curr) => {
+    map2(soFar,curr){(aList,anElem) => anElem :: aList}
+  })
+  
 }

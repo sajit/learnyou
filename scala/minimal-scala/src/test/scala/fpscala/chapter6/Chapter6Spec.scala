@@ -73,4 +73,15 @@ class Chapter6Spec extends BaseSpec{
     }
     )
   }
+  
+  it should "sequencify a list of Rands" in {
+    val r1 = PreludeRNGs.unit(4)
+    val r2 = PreludeRNGs.unit(3)
+    val listOfRands = List(r1,r2)
+    val randList:Rand[List[Int]] = PreludeRNGs.mySequence(listOfRands)
+     val rng:RNG = SimpleRNG(Random.nextLong())
+    val (result,rng2):(List[Int],RNG) = randList(rng)
+    result.length should be (2)
+    result should be (List(3,4))
+  }
 }
