@@ -62,4 +62,10 @@ class JphmSpec extends BaseSpec {
     bBool should be (false)
   }
   
+  it should "unitify a state" in {
+    
+    val (result,rng) = State.unit(5).run.apply(simpleRng)
+    result should be (5)
+  }
+  
 }
