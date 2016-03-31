@@ -8,7 +8,7 @@ object Arsenal {
 
   def addX(x:Int,el:List[Int]):List[Int] = el match {
     case Nil => Nil
-    case (h::t) => (h+x) :: addX(x,t)
+    case (h::t) => (h + x) :: addX(x,t)
   }
 
   def dToString(el:List[Double]):List[String] = el match {

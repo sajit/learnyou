@@ -3,9 +3,7 @@ package fpscala.chapter7
 import java.util.concurrent._
 import java.util.concurrent.atomic.AtomicReference
 
-/**
- * Created by sajit.kunnumkal on 12/14/2015.
- */
+
 object NonBlocking {
 
   type Par[A] = ExecutorService => Future[A]

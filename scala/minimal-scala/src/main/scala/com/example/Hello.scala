@@ -2,7 +2,7 @@ package com.example
 
 object Hello {
   def main(args: Array[String]): Unit = {
-    println("Hello, world!")
+    System.out.println("Hello, world!")
   }
 
   @annotation.tailrec
