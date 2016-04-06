@@ -56,5 +56,14 @@ object Gen {
   def largeStringsList(minLength:Int):Gen[List[String]] = Gen(State.sequence(List.fill(5)(longStringGen)))
   
   
-  def listOfNv2[A] (n:Int,g:Gen[A]):Gen[List[A]] = ???
+  /**
+   * A dumb function that returns  a generator of a list of length x (each element with value 5)
+   */
+  val listFlatMap:(Int => Gen[List[Int]]) = { x => Gen.unit2(List.fill(x)(5))}
+    
+
+  /**
+   * Exercise 8.6-a
+   */
+  def listOfN3 (g:Gen[Int]):Gen[List[Int]] = g.flatMap(listFlatMap)
 }

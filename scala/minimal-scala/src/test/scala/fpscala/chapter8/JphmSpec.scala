@@ -68,4 +68,14 @@ class JphmSpec extends BaseSpec {
     result should be (5)
   }
   
+  it should "show Jesus' mercy on the world" in {
+    val genInt = Gen.unit(3)
+    val genIntList = Gen.listOfN3(genInt)
+    val (result,rng):(List[Int],RNG) = genIntList.sample.run(simpleRng)
+    result.head should be (5)
+    result.length should be (3)
+    
+    
+  }
+  
 }
