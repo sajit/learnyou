@@ -6,6 +6,12 @@ case class Gen[A](sample: State[RNG, A]) {
     case (n,rng2) => (start + n % (stopExclusive-start), rng2)
   }))
   
+  /**
+   * Sample is Type State[S,A]
+   * sample.flatMap is { State [S,A] => State[S,B]}
+   * f(a) = Gen[B]
+   * f(a).sample = State [S,B]
+   */
   def flatMap[B](f:A=>Gen[B]):Gen[B] = Gen(sample.flatMap(a => f(a).sample))
 }
 object Gen {
@@ -36,9 +42,7 @@ object Gen {
     def listOfN2[A] (n:Int,g:Gen[A]):Gen[List[A]] = Gen(State.sequence(getStateList(n,g,List())))
     
     def getStateList[A](n:Int,g:Gen[A],soFar:List[State[RNG,A]]):List[State[RNG,A]] = {
-    if(n<=0){
-      soFar
-    }
+    if(n<=0){soFar}
     else{
       val curr = g.sample
       getStateList(n-1,g,curr :: soFar)
