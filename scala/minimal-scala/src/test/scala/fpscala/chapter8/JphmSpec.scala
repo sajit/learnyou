@@ -78,4 +78,12 @@ class JphmSpec extends BaseSpec {
     
   }
   
+  it should "drops of mercy" in {
+    val genInt = Gen.unit(3)
+    val genIntList = Gen.listOfN4(4,genInt)
+    val (result,rng):(List[Int],RNG) = genIntList.sample.run(simpleRng)
+    result.head should be (3)
+    result.length should be (4)
+  }
+  
 }

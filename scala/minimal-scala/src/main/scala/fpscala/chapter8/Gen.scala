@@ -66,4 +66,18 @@ object Gen {
    * Exercise 8.6-a
    */
   def listOfN3 (g:Gen[Int]):Gen[List[Int]] = g.flatMap(listFlatMap)
+  
+  def genericFlatMap[A](a:A):Gen[List[A]] =  Gen(State(rng => (List(a),rng)))
+  /**
+   * Exercise 8.6
+   */
+  def listOfN4[A](n:Int,g:Gen[A]):Gen[List[A]] = g.flatMap{ a => {
+    if(n <=1) Gen.unit2(List(a))
+    else{
+      
+      listOfN4(n-1,g).flatMap { aList => Gen.unit( aList.head:: aList) }
+    }
+  }}
+  
+ 
 }
