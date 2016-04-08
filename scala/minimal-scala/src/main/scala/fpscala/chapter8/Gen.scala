@@ -75,9 +75,20 @@ object Gen {
     if(n <=1) Gen.unit2(List(a))
     else{
       
-      listOfN4(n-1,g).flatMap { aList => Gen.unit( aList.head:: aList) }
+      listOfN4(n-1,g).flatMap { aList => Gen.unit( aList.head :: aList) }
     }
   }}
   
+  def intListOfN(n:Int,g:Gen[Int]):Gen[List[Int]] = g.flatMap{ a => {
+    //println("A " + a)
+    if(n <=1) Gen.unit2(List(a))
+    else{
+      
+      intListOfN(n-1,Gen.unit2(a-1)).flatMap { aList => {
+        //println("aList " + aList)
+        Gen.unit( a:: aList) 
+        }}
+    }
+  }}
  
 }

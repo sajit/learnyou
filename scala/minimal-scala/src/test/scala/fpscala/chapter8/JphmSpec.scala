@@ -86,4 +86,17 @@ class JphmSpec extends BaseSpec {
     result.length should be (4)
   }
   
+  it should "reiterate to relearn" in {
+    val genInt = Gen.unit(3)
+    val listN4Gen = Gen.intListOfN(4, genInt)
+    val (result,rng):(List[Int],RNG) = listN4Gen.sample.run(simpleRng)
+    
+    result.length should be (4)
+    result.foldLeft(3)((acc,curr) => {
+      curr should be <= (acc)
+      curr
+    })
+    
+  }
+  
 }
