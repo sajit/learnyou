@@ -99,4 +99,19 @@ class JphmSpec extends BaseSpec {
     
   }
   
+  it should "union generators " in {
+    val g1 = Gen.unit(1)
+    val g2 = Gen.unit(2)
+    val g3 = Gen.unit(3)
+    val poller = Gen.boolean.sample.run(simpleRng)
+    val (result,rng) = Gen.union(Gen.union(g1,g2),g3).sample.run(simpleRng)
+    result should not be (2)
+//    if(poller._1){
+//      result should be (1)
+//    }
+//    else{
+//      result should be (3)
+//    }
+  }
+  
 }
