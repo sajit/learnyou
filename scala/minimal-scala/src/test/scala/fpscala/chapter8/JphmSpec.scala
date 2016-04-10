@@ -1,22 +1,30 @@
 package fpscala.chapter8
 
-
+import Prop._
 import fpscala.BaseSpec
 class JphmSpec extends BaseSpec { 
   
   it should " be an example of God's mercy on sinners" in {
     true should be(true)
   }
+  val simpleRng = RNG.Simple(100)
   
-  class FooProp extends Prop {
+  val aRun:(TestCases,RNG)=> Result = {
+    case (0,simpleRng) => Passed
+    case _ => Passed
+  }
+  class FooProp extends Prop(aRun){
     def check = true
   }
+  
+  
   it should "have a defined function check" in {
+    
     val prop1 = new FooProp()
     prop1.check should be(true)
   }
   
-  val simpleRng = RNG.Simple(100)
+  
   
   it should "choose a number less than second arg" in {
     

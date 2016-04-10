@@ -2,20 +2,13 @@ package fpscala.chapter8
 
 
 
-trait Prop {
-  
- 
-  def check:Boolean
-  
-  def betterCheck: Either[(Prop.FailedCase,Prop.SuccessCount),Prop.SuccessCount] = ???
-  
-  //copied from answer 3 chapter 8
-    def &&(p: Prop): Prop = new Prop {
-       def check = Prop.this.check && p.check
-    }
-}
+
+import Prop.TestCases
+import Prop.Result
+case class Prop(run: (TestCases,RNG) => Result)
 
 object Prop {
+  type TestCases = Int
   type FailedCase = String
   type SuccessCount = Int
   
