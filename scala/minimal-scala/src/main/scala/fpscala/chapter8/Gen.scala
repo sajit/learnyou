@@ -97,5 +97,15 @@ object Gen {
       }
    
   }
+  
+  val r = scala.util.Random
+  def equiWeightedUnion[A](g1:Gen[A],g2:Gen[A]):Gen[A] = {
+    if(r.nextFloat() < 0.5) g1 else g2
+  }
  
+  def weighted[A](g1:(Gen[A],Double),g2:(Gen[A],Double)):Gen[A] = {
+    val (g11,d1) = g1
+    val (g21,d2) = g2
+    if(r.nextFloat() < d1.toFloat) g11 else g21
+  }
 }
