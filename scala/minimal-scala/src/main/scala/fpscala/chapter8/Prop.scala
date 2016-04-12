@@ -3,11 +3,27 @@ package fpscala.chapter8
 import fpscala.chapter5._
 
 
+import Prop._
 
-
-import Prop.TestCases
-import Prop.Result
-case class Prop(run: (TestCases,RNG) => Result)
+case class Prop(run: (TestCases,RNG) => Result){
+  /**
+   * copied from 
+   * https://github.com/fpinscala/fpinscala/blob/master/answers/src/main/scala/fpinscala/testing/Gen.scala
+   */
+  def &&(p:Prop):Prop = Prop {
+    (n,rng) => run(n,rng) match {
+      case Passed => p.run(n,rng)
+      case x => x
+    }
+  }
+  
+  def ||(p:Prop):Prop = Prop {
+    (n,rng) => run(n,rng) match {
+      case Passed => Passed
+      case x => p.run(n,rng)
+    }
+  }
+}
 
 object Prop {
   type TestCases = Int
@@ -42,7 +58,6 @@ object Prop {
         //if an exception happens record it
         case e:Exception => Falsified(buildMsg(a,e),i) }
       }.find(_.isFalsified).getOrElse(Passed)
-    }
-  
+    }  
 
 }

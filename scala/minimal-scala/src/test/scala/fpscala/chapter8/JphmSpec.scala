@@ -122,4 +122,25 @@ class JphmSpec extends BaseSpec {
 //    }
   }
   
+  it should "only pass if both props pass " in {
+    
+    val p1 = Prop({(n,rng) => Passed})
+    val p2 = Prop((n,rng) => Passed)
+    p1.&&(p2).run.apply(1, simpleRng) should be (Passed)
+  }
+  
+  it should "not pass if either fail " in {
+    val failed = Falsified("tough luck",1)
+    val p1 = Prop({(n,rng) => failed})
+    val p2 = Prop((n,rng) => Passed)
+    p1.&&(p2).run.apply(1, simpleRng) should be (failed)
+  }
+  
+  it should "pass if either pass " in {
+    val failed = Falsified("tough luck",1)
+    val p1 = Prop({(n,rng) => failed})
+    val p2 = Prop((n,rng) => Passed)
+    p1.||(p2).run.apply(1, simpleRng) should be (Passed)
+  }
+  
 }
