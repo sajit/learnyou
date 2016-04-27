@@ -1,7 +1,7 @@
 package fpscala.chapter8
 
-import Prop._
 import fpscala.BaseSpec
+import fpscala.chapter8.Prop._
 class JphmSpec extends BaseSpec { 
   
   it should " be an example of God's mercy on sinners" in {
@@ -141,6 +141,11 @@ class JphmSpec extends BaseSpec {
     val p1 = Prop({(n,rng) => failed})
     val p2 = Prop((n,rng) => Passed)
     p1.||(p2).run.apply(1, simpleRng) should be (Passed)
+  }
+
+  it should "build a message" in {
+    val result = Prop.buildMsg(1, new Exception("hello world"))
+    result should be("test case: 1\n" + "generated an exception: hello world")
   }
   
 }

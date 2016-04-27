@@ -1,9 +1,7 @@
 package fpscala.chapter8
 
 import fpscala.chapter5._
-
-
-import Prop._
+import fpscala.chapter8.Prop._
 
 case class Prop(run: (TestCases,RNG) => Result){
   /**
@@ -43,11 +41,17 @@ object Prop {
   def randomStream[A](g:Gen[A])(rng:RNG):Stream[A] = 
     StreamUtils. //Generates an infinite stream of A values by repeatedly sampling in generator
     unfold(rng)(rng => Some(g.sample.run(rng)))
-    
+
+  /**
+   * Simply builds a string
+   * @param s
+   * @param e
+   * @tparam A
+   * @return
+   */
   def buildMsg[A](s: A, e: Exception): String =
     s"test case: $s\n" +
-    s"generated an exception: ${e.getMessage}\n" +
-    s"stack trace:\n ${e.getStackTrace.mkString("\n")}"
+      s"generated an exception: ${e.getMessage}"
   
   def forAll[A](as:Gen[A])(f:A=> Boolean):Prop = Prop {
     (n,rng) => randomStream(as)(rng).zip(Stream.from(0)).take(n).map {
