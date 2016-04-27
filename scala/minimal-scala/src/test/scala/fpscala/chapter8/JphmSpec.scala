@@ -147,5 +147,12 @@ class JphmSpec extends BaseSpec {
     val result = Prop.buildMsg(1, new Exception("hello world"))
     result should be("test case: 1\n" + "generated an exception: hello world")
   }
+
+  it should "generate a stream " in {
+    val g:Gen[Int] = Gen.unit(4)
+    val intStream:Stream[Int] = Prop.randomStream(g)(simpleRng)
+    intStream.isEmpty should be (false)
+    intStream.head should be (4)
+  }
   
 }
