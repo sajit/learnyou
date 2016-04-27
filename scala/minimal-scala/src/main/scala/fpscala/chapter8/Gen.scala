@@ -13,6 +13,8 @@ case class Gen[A](sample: State[RNG, A]) {
    * f(a).sample = State [S,B]
    */
   def flatMap[B](f:A=>Gen[B]):Gen[B] = Gen(sample.flatMap(a => f(a).sample))
+
+  def unsized: SGen[A] = SGen(x => this)
 }
 object Gen {
  
