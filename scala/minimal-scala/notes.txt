@@ -1,0 +1,1 @@
+Parametricity: When we can "follow the type" of a function to derive the only possible implementation, we say that the definition is `given by parametricity`
