@@ -12,7 +12,7 @@ class SGenSpec  extends BaseSpec{
   it should " generate a SGen from Gen" in {
     val gen = Gen(state)
     val sGen:SGen[Int] = gen.unsized
-    val derivedGen = sGen.forSize(10)
+    val derivedGen = sGen.g(10)
     derivedGen should be (gen)
   }
 
