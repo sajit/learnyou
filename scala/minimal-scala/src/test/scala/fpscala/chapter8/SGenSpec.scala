@@ -15,4 +15,13 @@ class SGenSpec  extends BaseSpec{
     val derivedGen = sGen.forSize(10)
     derivedGen should be (gen)
   }
+
+  it should "apply function behave as usual " in {
+    def foo: (Int => Gen[Int]) = { x => Gen.unit(x) }
+    val sgen = SGen(foo)
+    val aGen: Gen[Int] = sgen.apply(5)
+    val simpleRng = RNG.Simple(100)
+    val (result, aRng) = aGen.sample.run(simpleRng)
+    result should be(5)
+  }
 }
