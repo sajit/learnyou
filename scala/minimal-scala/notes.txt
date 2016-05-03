@@ -6,3 +6,8 @@ approach to handle partial functions, but in functional programming typical only
 Total functions are defined for all inputs.Ie every value of the input type maps to a value of the output type.
 
 Covariance && Contravariance
+Author feels unncessarily compilcates functional programming
+
+In Scala, [B >: A ] means B is a supertype of A.
+
+Also in scala, Option[Dog] is a subtype of Option[Animal]
