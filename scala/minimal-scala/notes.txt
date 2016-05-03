@@ -11,3 +11,22 @@ Author feels unncessarily compilcates functional programming
 In Scala, [B >: A ] means B is a supertype of A.
 
 Also in scala, Option[Dog] is a subtype of Option[Animal]
+
+The following is super super important.
+
+Covariant and contravariant positions
+A type is in covariant position (positive) if it is in the result type of a function, or more generally is
+the type of a value that is produced.
+A type is in contravariant position (negative) if it’s in the argument type of a function, or more
+generally is the type of a value that is consumed.
+For example, in def foo(a: A): B, the type A is in contravariant position and B is in covariant
+position, all things being equal.
+We can extend this reasoning to higher-order functions. In def foo(f: A => B): C, the type A => B
+appears in negative (contravariant) position. This means the variance of the types A and B is flipped.
+The type A appears in a negative position of a type in negative position. So just like the negation of
+a negative is a positive, this means A is actually in covariant position. And since B is in the covariant
+position of a type in contravariant position, it’s the negation of a positive, so B is in contravariant
+position overall.
+We can always count the position of a polymorphic type this way. Result types are positive, and
+argument types are negative. The arguments to arguments are positive, arguments to arguments to
+arguments are negative, and so on.
