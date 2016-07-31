@@ -75,6 +75,21 @@ object Par {
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
 
+  def sequencev2[A](ps:List[Par[A]]):Par[List[A]] = es => {
+    val futures:List[Future[A]] = ps.map{ aPar => aPar(es)}
+    val as:List[A] = futures.map { aFuture => aFuture.get() }
+    //lazyUnit(List[A]())
+    UnitFuture(as)
+    
+  }
+  
+  def sequenceCopied[A](ps:List[Par[A]]):Par[List[A]] = ps match {
+    case Nil => unit(List())
+    case hPar :: tList => {
+      map2(hPar,sequenceCopied(tList))((el,acc) => el :: acc)
+    }
+ 
+  }
   def parSum(as: List[Int]): Par[Int] = {
     if (as.length <= 1) {
       unit(as.headOption.getOrElse(0))

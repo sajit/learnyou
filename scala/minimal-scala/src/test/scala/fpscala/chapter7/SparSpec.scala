@@ -35,6 +35,15 @@ class SparSpec extends BaseSpec {
       Par.run(es)(parC).get()
     }
   }
+  
+  it should " sequenceify recursively " in {
+    
+    val es = Executors.newFixedThreadPool(1)
+    val inList:List[Par[Int]] = List(Par.unit(4),Par.unit(2),Par.unit(5))
+    val listPar:Par[List[Int]] = Par.sequenceCopied(inList)
+    val resultList: List[Int] = Par.run(es)(listPar).get()
+    resultList should be (List(4,2,5))
+  }
 
   it should "calculate asynchronously " in {
     val f: (String => Int) = { x => Thread.sleep(2000)
