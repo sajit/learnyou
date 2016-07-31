@@ -15,7 +15,7 @@ class SparSpec extends BaseSpec {
     val es = Executors.newFixedThreadPool(3)
     val aPar: Par[Int] = Par.unit(5)
     val bPar: Par[Int] = Par.unit(6)
-    val parC: Par[Int] = Par.map3(aPar, bPar) { (x, y) => x + y}
+    val parC: Par[Int] = Par.mapWithTimeouts(aPar, bPar) { (x, y) => x + y}
     val result = Par.run(es)(parC).get()
     result should be(11)
 
@@ -31,7 +31,7 @@ class SparSpec extends BaseSpec {
     })
     val bPar: Par[Int] = Par.unit(6)
     intercept[Exception] {
-      val parC: Par[Int] = Par.map3(aPar, bPar) { (x, y) => x + y}
+      val parC: Par[Int] = Par.mapWithTimeouts(aPar, bPar) { (x, y) => x + y}
       Par.run(es)(parC).get()
     }
   }

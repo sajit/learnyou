@@ -15,7 +15,7 @@ object Par {
 
   def run[A](s: ExecutorService)(a: Par[A]): Future[A] = a(s)
 
-  def map3[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+  def mapWithTimeouts[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
     val af: Future[A] = a(es)
     val bf: Future[B] = b(es)
     val timeout: Long = 1l
