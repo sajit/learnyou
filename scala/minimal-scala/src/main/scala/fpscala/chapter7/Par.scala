@@ -28,6 +28,7 @@ object Par {
   }
 
   def parMap[A, B](ps: List[A])(f: A => B): Par[List[B]] = fork {
+    
     val bFutures: List[Par[B]] = ps.map(asyncF(f))
     sequence(bFutures)
   }
@@ -78,7 +79,6 @@ object Par {
   def sequencev2[A](ps:List[Par[A]]):Par[List[A]] = es => {
     val futures:List[Future[A]] = ps.map{ aPar => aPar(es)}
     val as:List[A] = futures.map { aFuture => aFuture.get() }
-    //lazyUnit(List[A]())
     UnitFuture(as)
     
   }
@@ -126,19 +126,17 @@ object Par {
     doParFilter(as)(f)(false)
   }
   
+  def parFilterv3[A](as:List[A])(f: A => Boolean): Par[List[A]] = as match {
+    case Nil => unit(List())
+    case h :: t => {
+      
+      map2(unit(h),parFilterv3(t)(f)){(el,acc) => if(f(el)) {el :: acc} else {acc}}
+    }
+          
+  }
   
-//  def parSum(as: List[Int]): Par[Int] = {
-//    if (as.length <= 1) {
-//      unit(as.headOption.getOrElse(0))
-//    }
-//    else {
-//      val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
-//      val f: (Par[Int], Par[Int]) => Int = ???
-//
-//      map2(asyncF(parSum)(l), asyncF(parSum)(r))(f)
-//
-//    }
-//  }
+  
+
 
   def parExists[A](as: List[A])(f: A => Boolean): Par[Boolean] = map(parFilter2(as)(f))(aList => !aList.isEmpty)
 
