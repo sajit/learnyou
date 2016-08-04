@@ -108,8 +108,8 @@ object Par {
     }
     else {
       val (l, r): (List[Int], List[Int]) = as.splitAt(as.length / 2)
-      val lPar: Par[Int] = Par.run(globEs)(asyncF(parSum1)(l)).get()
-      val rPar: Par[Int] = Par.run(globEs)(asyncF(parSum1)(r)).get()
+      val lPar: Par[Int] = parSum1(l)
+      val rPar: Par[Int] = parSum1(r)
       map2(lPar, rPar)((e1, e2) => e1 + e2)
     }
   }
