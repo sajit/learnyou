@@ -129,8 +129,8 @@ object Par {
   def parFilterv3[A](as:List[A])(f: A => Boolean): Par[List[A]] = as match {
     case Nil => unit(List())
     case h :: t => {
-      
-      map2(unit(h),parFilterv3(t)(f)){(el,acc) => if(f(el)) {el :: acc} else {acc}}
+      val parB:Par[Boolean] = asyncF(f)(h)
+      map2(parB,parFilterv3(t)(f)){(el,acc) => if(el) {h :: acc} else {acc}}
     }
           
   }

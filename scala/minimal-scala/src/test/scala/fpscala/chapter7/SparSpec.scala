@@ -69,4 +69,12 @@ class SparSpec extends BaseSpec {
     val fSum = Par.parSum(List(3, 4, 5))
     fSum(es).get() should be(12)
   }
+  
+  it should "provide an alternative parallel filter " in {
+    val es = Executors.newFixedThreadPool(3)
+    val al = List(4,3,15,8,9,7)
+    val filtered = Par.parFilterv3(al){x => x % 4 ==0 }
+    Par.run(es)(filtered).get() should be (List(4,8))
+    
+  }
 }
