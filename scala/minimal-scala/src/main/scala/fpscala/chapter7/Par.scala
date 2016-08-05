@@ -160,5 +160,27 @@ object Par {
     def cancel(eventIfRunning: Boolean) = false
 
   }
+  
+  def merge(a:Map[String,Int],b:Map[String,Int]):Map[String,Int] = {
+    val merged:Map[String,Int] =  a.map{case(x,y) => {
+      val count = b.get(x).getOrElse(0) + y; 
+      (x,count)
+      }
+    }
+                                                  
+   b ++ merged   
+  }
+  
+  def count(list:List[String]):Map[String,Int] = {
+    list.groupBy { el => el }.mapValues { x => x.size }
+  }
 
+  def parWordCount(paras:List[List[String]],soFar:Map[String,Int]): Map[String,Int] = paras match {
+    case Nil => soFar
+    case h :: t => {
+      val counts = count(h)
+      val merged = merge(counts,soFar)
+      parWordCount(t,merged)
+    }
+  }
 }

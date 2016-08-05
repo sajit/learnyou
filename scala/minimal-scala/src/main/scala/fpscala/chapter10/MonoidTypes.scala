@@ -28,4 +28,12 @@ object MonoidTypes {
     def op(a1:Option[A],a2:Option[A]):Option[A] = a1.orElse(a2)
     val zero = None
   }
+  
+  // There is a choice of implementation here as well.
+// Do we implement it as `f compose g` or `f andThen g`? We have to pick one.
+// We can then get the other one using the `dual` construct (see previous answer).
+def endoMonoid[A]: Monoid[A => A] = new Monoid[A => A] {
+  def op(f: A => A, g: A => A) = f compose g
+  val zero = ???
+}
 }

@@ -77,4 +77,11 @@ class SparSpec extends BaseSpec {
     Par.run(es)(filtered).get() should be (List(4,8))
     
   }
+  
+  it should "count words in paragraphs " in {
+    val para = List(List("hello","world"),List("hello","sad","world"))
+    val wc = Par.parWordCount(para, Map())
+    val expected = Map("hello" -> 2, "world" -> 2, "sad" -> 1)
+    wc should be(expected)
+  }
 }
