@@ -23,5 +23,11 @@ class Chapter10Spec extends BaseSpec{
   }
 
   
-  
+   it should "fold and map " in {
+     val ints = List(4,6,12,2)
+     val f:(Int => Boolean) = {x => x%2==0}
+     val result = MonoidTypes.foldMap(ints, MonoidTypes.booleanAnd)(f)
+     result should be (true)
+     MonoidTypes.foldMap(List(4,6,3,12), MonoidTypes.booleanAnd)(f) should be (false)
+   }
 }
