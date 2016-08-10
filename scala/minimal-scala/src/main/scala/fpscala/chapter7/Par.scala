@@ -4,10 +4,6 @@ import java.util.concurrent._
 import scala.util._
 
 
-/**
- * Created by sajit on 12/2/15.
- */
-
 object Par {
 
   type Par[A] = ExecutorService => Future[A]
@@ -44,12 +40,6 @@ object Par {
 
   def map[A, B](pa: Par[A])(f: A => B): Par[B] = map2(pa, unit(()))((a, _) => f(a))
 
-  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
-    val af = a(es)
-    val bf = b(es)
-    UnitFuture(f(af.get(), bf.get()))
-  }
-
   private def not[A](f: A => Boolean, a: A, isNot: Boolean) = if (isNot) {
     !f(a)
   } else {
@@ -75,6 +65,12 @@ object Par {
 
   def sequence[A](ps: List[Par[A]]): Par[List[A]] = ps.foldRight[Par[List[A]]](unit(List()))((aParElement, parOfAList) =>
     map2(aParElement, parOfAList)((element, acc) => element :: acc))
+
+  def map2[A, B, C](a: Par[A], b: Par[B])(f: (A, B) => C): Par[C] = es => {
+    val af = a(es)
+    val bf = b(es)
+    UnitFuture(f(af.get(), bf.get()))
+  }
 
   def sequencev2[A](ps:List[Par[A]]):Par[List[A]] = es => {
     val futures:List[Future[A]] = ps.map{ aPar => aPar(es)}
@@ -140,35 +136,14 @@ object Par {
 
   def parExists[A](as: List[A])(f: A => Boolean): Par[Boolean] = map(parFilter2(as)(f))(aList => !aList.isEmpty)
 
-  /**
-   * From github source
-   * https://github.com/fpinscala/fpinscala/blob/master/answerkey/parallelism/06.answer.scala
-   * @param as
-   * @param f
-   * @tparam A
-   * @return
-   */
-  //def parFilter2[A](as: List[A])(f: A => Boolean): Par[List[A]] = ???
-
-  private case class UnitFuture[A](get: A) extends Future[A] {
-    def isDone = true
-
-    def isCancelled = false
-
-    def get(timeout: Long, units: TimeUnit) = get
-
-    def cancel(eventIfRunning: Boolean) = false
-
-  }
-  
-  def merge(a:Map[String,Int],b:Map[String,Int]):Map[String,Int] = {
-    val merged:Map[String,Int] =  a.map{case(x,y) => {
-      val count = b.get(x).getOrElse(0) + y; 
-      (x,count)
-      }
+  def merge(a: Map[String, Int], b: Map[String, Int]): Map[String, Int] = {
+    val merged: Map[String, Int] = a.map { case (x, y) => {
+      val count = b.get(x).getOrElse(0) + y;
+      (x, count)
     }
-                                                  
-   b ++ merged   
+    }
+
+    b ++ merged
   }
   
   def count(list:List[String]):Map[String,Int] = {
@@ -182,5 +157,16 @@ object Par {
       val merged = merge(counts,soFar)
       parWordCount(t,merged)
     }
+  }
+
+  private case class UnitFuture[A](get: A) extends Future[A] {
+    def isDone = true
+
+    def isCancelled = false
+
+    def get(timeout: Long, units: TimeUnit) = get
+
+    def cancel(eventIfRunning: Boolean) = false
+
   }
 }

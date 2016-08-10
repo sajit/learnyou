@@ -5,9 +5,6 @@ import java.util.concurrent._
 import fpscala.BaseSpec
 import fpscala.chapter7.Par.Par
 
-/**
- * Created by sajit on 12/5/15.
- */
 class SparSpec extends BaseSpec {
 
 
@@ -62,10 +59,10 @@ class SparSpec extends BaseSpec {
     val es = Executors.newFixedThreadPool(1)
     Par.run(es)(boolPar).get() should be(true)
   }
-
+  val es = Executors.newFixedThreadPool(3)
 
   it should "take some executor service and calculate sum " in {
-    val es = Executors.newFixedThreadPool(3)
+
     val fSum = Par.parSum(List(3, 4, 5))
     fSum(es).get() should be(12)
   }
@@ -83,5 +80,13 @@ class SparSpec extends BaseSpec {
     val wc = Par.parWordCount(para, Map())
     val expected = Map("hello" -> 2, "world" -> 2, "sad" -> 1)
     wc should be(expected)
+  }
+
+  it should "make a choice " in {
+    val left: NonBlocking.Par[Int] = NonBlocking.unit(2)
+    val right: NonBlocking.Par[Int] = NonBlocking.unit(3)
+    val result = NonBlocking.run(es)(NonBlocking.choice(NonBlocking.unit(true))(left, right))
+    result should be(2)
+    NonBlocking.run(es)(NonBlocking.choice(NonBlocking.unit(false))(left, right)) should be(3)
   }
 }
