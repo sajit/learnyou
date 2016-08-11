@@ -6,13 +6,13 @@ import java.util.concurrent.atomic.AtomicReference
 
 object NonBlocking {
 
-  type Par[A] = ExecutorService => Future[A]
+  type NBPar[A] = ExecutorService => Future[A]
 
-  def unit[A](a: A): Par[A] = es => new Future[A] {
+  def unit[A](a: A): NBPar[A] = es => new Future[A] {
     def apply(cb: A => Unit): Unit = cb(a)
   }
 
-  def choice[A](condition: Par[Boolean])(a: Par[A], b: Par[A]): Par[A] = es => {
+  def choice[A](condition: NBPar[Boolean])(a: NBPar[A], b: NBPar[A]): NBPar[A] = es => {
     val result: Boolean = run(es)(condition)
     if (result) {
       a(es)
@@ -21,7 +21,7 @@ object NonBlocking {
     }
   }
 
-  def run[A](es: ExecutorService)(p: Par[A]): A = {
+  def run[A](es: ExecutorService)(p: NBPar[A]): A = {
     val ref = new AtomicReference[A]() //A mutable thread-safe reference to use for storing the result
     val latch = new CountDownLatch(1) //allows threads to wait till countdown method is called x times
     p(es) { a => ref.set(a); ; latch.countDown() }

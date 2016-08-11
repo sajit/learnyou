@@ -83,8 +83,8 @@ class SparSpec extends BaseSpec {
   }
 
   it should "make a choice " in {
-    val left: NonBlocking.Par[Int] = NonBlocking.unit(2)
-    val right: NonBlocking.Par[Int] = NonBlocking.unit(3)
+    val left: NonBlocking.NBPar[Int] = NonBlocking.unit(2)
+    val right: NonBlocking.NBPar[Int] = NonBlocking.unit(3)
     val result = NonBlocking.run(es)(NonBlocking.choice(NonBlocking.unit(true))(left, right))
     result should be(2)
     NonBlocking.run(es)(NonBlocking.choice(NonBlocking.unit(false))(left, right)) should be(3)
