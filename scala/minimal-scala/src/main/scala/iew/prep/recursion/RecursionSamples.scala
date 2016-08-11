@@ -21,4 +21,40 @@ object RecursionSamples {
     }
     
   }
+  
+  def evaluateSeries(in:List[Int]):String = {
+    
+    if(in.length < 3) {
+      "None"
+    }
+    else {
+      if(in(2)-in(1)==in(1)-in(0)){
+        //AP
+        // for loop execution with a range
+        var a = 1
+      for(a <- 1 until in.size-2){
+         if(in(a+2)-in(a+1) != in(a+1)-in(a)){
+           return "None"
+           }
+           
+        }
+      "AP"
+      }  
+      else if(in(2)/in(1)==in(1)/in(0)) {
+        //GP
+        var a = 1
+      for(a <- 1 until in.size-2){
+         if(in(a+2)-in(a+1) != in(a+1)-in(a)){
+           return "None"
+           }
+           
+        }
+      "GP"
+        
+      }
+      else {
+        "None"
+      }
+    }
+  }
 }
