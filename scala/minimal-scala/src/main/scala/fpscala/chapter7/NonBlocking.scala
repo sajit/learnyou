@@ -2,6 +2,7 @@ package fpscala.chapter7
 
 import java.util.concurrent._
 import java.util.concurrent.atomic.AtomicReference
+import java.lang.Exception
 
 
 object NonBlocking {
@@ -20,6 +21,17 @@ object NonBlocking {
       b(es)
     }
   }
+  
+  def choiceN[A](n:NBPar[Int])(choices:List[NBPar[A]]):NBPar[A] = es => {
+    val x = run(es)(n)
+    x match {
+      case a if a < 0 => throw new Exception()
+      case a if a < choices.length => choices(a)(es)
+      case a if a >= choices.length => throw new Exception()
+    }
+  }
+  
+ 
 
   def run[A](es: ExecutorService)(p: NBPar[A]): A = {
     val ref = new AtomicReference[A]() //A mutable thread-safe reference to use for storing the result

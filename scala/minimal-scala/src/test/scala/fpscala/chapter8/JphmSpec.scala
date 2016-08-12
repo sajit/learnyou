@@ -114,12 +114,7 @@ class JphmSpec extends BaseSpec {
     val poller = Gen.boolean.sample.run(simpleRng)
     val (result,rng) = Gen.union(Gen.union(g1,g2),g3).sample.run(simpleRng)
     result should not be (2)
-//    if(poller._1){
-//      result should be (1)
-//    }
-//    else{
-//      result should be (3)
-//    }
+
   }
   
   it should "only pass if both props pass " in {
