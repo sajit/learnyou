@@ -31,7 +31,11 @@ object NonBlocking {
     }
   }
   
- 
+  def choiceMap[K,V](key:NBPar[K])(choices:Map[K,NBPar[V]]):NBPar[V] = es => {
+    val keyX = run(es)(key)
+    choices.get(keyX).get (es)
+    
+  }
 
   def run[A](es: ExecutorService)(p: NBPar[A]): A = {
     val ref = new AtomicReference[A]() //A mutable thread-safe reference to use for storing the result

@@ -26,4 +26,10 @@ class NonBlockingSpec extends BaseSpec{
     result should be (3)
   }
   
+  it should "map choices " in {
+    val fMap:Map[Int,NBPar[Int]] = Map(0 -> unit(3),1 -> unit(2),2 -> unit(1))
+    val result = NonBlocking.run(es)(choiceMap(NonBlocking.unit(0))(fMap))
+    result should be (3)
+  }
+  
 }
