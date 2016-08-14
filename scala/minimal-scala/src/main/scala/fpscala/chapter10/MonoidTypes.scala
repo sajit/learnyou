@@ -1,5 +1,7 @@
 package fpscala.chapter10
 
+import fpscala.chapter7.NonBlocking._
+
 object MonoidTypes {
   val stringMonoid = new Monoid[String] {
     def op(a1:String,a2:String) = a1 + a2
@@ -54,4 +56,26 @@ object MonoidTypes {
     }
     
   }
+  
+  def par[A](m:Monoid[A]):Monoid[NBPar[A]] = new Monoid[NBPar[A]] {
+    def op(a1:NBPar[A],a2:NBPar[A]) = map2(a1,a2)(m.op)
+    val zero = unit(m.zero)
+  }
+  
+  def parFoldMap[A,B](v:IndexedSeq[A],m:Monoid[B])(f:A => B):NBPar[B] = {
+    if(v.length ==0){
+      unit(m.zero)
+    }
+    else if(v.length == 1) {
+      unit(f(v(0)))
+    }
+    else {
+      val (left,right ) = v.splitAt(v.length/2)
+      map2(parFoldMap(left,m)(f),parFoldMap(right,m)(f))(m.op)
+     
+    }
+    
+  }
+  
+  
 }
