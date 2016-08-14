@@ -40,4 +40,18 @@ object MonoidTypes {
   def concatenate[A] (as:List[A],m:Monoid[A]):A = as.foldLeft(m.zero)(m.op)
   
   def foldMap[A,B] (as:List[A],m:Monoid[B])(f: A => B):B = as.foldLeft(m.zero) {  (acc,el) => m.op(f(el),acc)}
+  
+  def foldMapV[A,B](v:IndexedSeq[A],m:Monoid[B])(f: A => B):B = {
+    if(v.length ==0){
+      m.zero
+    }
+    else if(v.length == 1) {
+      f(v(0))
+    }
+    else {
+      val (left,right ) = v.splitAt(v.length/2)
+      m.op(foldMapV(left,m)(f),foldMapV(right,m)(f))
+    }
+    
+  }
 }
