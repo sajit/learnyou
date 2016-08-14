@@ -50,5 +50,12 @@ object NonBlocking {
     private[chapter7] def apply(k: A => Unit): Unit
 
   }
+  
+  def map2[A, B, C](a: NBPar[A], b: NBPar[B])(f: (A, B) => C): NBPar[C] = es => {
+    val af:A = run (es)(a)
+    val bf:B = run (es)(b)
+    unit(f(af,bf))(es)
+    
+  }
 
 }
