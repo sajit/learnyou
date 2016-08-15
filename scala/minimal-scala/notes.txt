@@ -1,3 +1,4 @@
+Notes from companion.txt
 Parametricity: When we can "follow the type" of a function to derive the only possible implementation, we say that the definition is `given by parametricity`
 
 Partial functions: A partial function, is a function that is not defined for some of the inputs.There are different
