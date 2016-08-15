@@ -57,4 +57,20 @@ object RecursionSamples {
       }
     }
   }
+  /**
+   * https://www.hackerrank.com/challenges/fibonacci-modified
+   */
+  def modifiedFibo(t1:Int,t2:Int,n:Int):Int = {
+    var a=t1;
+    var b=t2;
+    var c = 0;
+    for(i <- 1 to n){
+      
+      c = a + b*b;
+      //System.out.println("a="+a+",b="+b+",c="+c);
+      a = b;
+      b = c;
+    }
+    return c;
+  }
 }

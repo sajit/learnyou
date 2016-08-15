@@ -23,4 +23,8 @@ class RecursionSamplesSpec extends BaseSpec{
     
   }
   
+  it should "calculate modified fibo " in {
+    RecursionSamples.modifiedFibo(0, 1, 2) should be (2)
+  }
+  
 }
