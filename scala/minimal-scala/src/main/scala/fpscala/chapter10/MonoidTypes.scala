@@ -39,6 +39,22 @@ object MonoidTypes {
     val zero = {x:A => x}
   }
   
+  sealed trait WC 
+  case class Stub(chars: String) extends WC
+  case class Pair(lStub:String,words:Int,rStub:String) extends WC
+  
+  val wcMonoid:Monoid[WC] = new Monoid[WC] {
+    def op(a1:WC,a2:WC):WC = (a1,a2) match {
+      case (l:Pair,r:Pair) => Pair(l.lStub,
+          l.words + (if((l.rStub+r.lStub).isEmpty()) 0 else 1) + r.words,
+          r.rStub) 
+      case (Stub(c),r:Pair) => Pair(c+r.lStub,r.words,r.rStub)
+      case (l:Pair,Stub(c)) => Pair(l.lStub,l.words,l.rStub+c)
+      case (Stub(a),Stub(b)) => Stub(a+b)
+    }
+    val zero = Stub("")
+  }
+  
   def concatenate[A] (as:List[A],m:Monoid[A]):A = as.foldLeft(m.zero)(m.op)
   
   def foldMap[A,B] (as:List[A],m:Monoid[B])(f: A => B):B = as.foldLeft(m.zero) {  (acc,el) => m.op(f(el),acc)}
