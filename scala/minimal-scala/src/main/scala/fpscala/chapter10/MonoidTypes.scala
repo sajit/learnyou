@@ -93,5 +93,10 @@ object MonoidTypes {
     
   }
   
+  def productMonoid[A,B] (A:Monoid[A], B: Monoid[B]):Monoid[(A, B)] = new Monoid[(A,B)] {
+    def op(p1:(A,B),p2:(A,B)) = (A.op(p1._1,p2._1),B.op(p1._2,p2._2))
+    val zero = (A.zero,B.zero)
+  }
+  
   
 }
