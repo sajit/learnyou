@@ -3,7 +3,23 @@ package fpscala.chapter10
 import fpscala.chapter3._
 
 object FoldableUtils {
+ 
   
+  def mapMergeMonoid[K,V](V: Monoid[V]): Monoid[Map[K, V]] =
+  new Monoid[Map[K, V]] {
+    def zero = Map[K,V]()
+    def op(a: Map[K, V], b: Map[K, V]) =
+      (a.keySet ++ b.keySet).foldLeft(zero) { (acc,k) =>
+        acc.updated(k, V.op(a.getOrElse(k, V.zero),
+                            b.getOrElse(k, V.zero)))
+      }
+  }
+  
+   /**
+   * Use monoids to build a bag from an indexed Seq : Directly copied
+   */
+  def bag[A](as: IndexedSeq[A]): Map[A, Int] = MonoidTypes.foldMapV(as, mapMergeMonoid[A, Int](MonoidTypes.intAddition))((a: A) => Map(a -> 1))
+
 }
 class FoldableList extends Foldable[List] {
   def foldLeft[A, B](as: List[A])(z: B)(f: (B, A) => B): B = as.foldLeft(z)(f)
