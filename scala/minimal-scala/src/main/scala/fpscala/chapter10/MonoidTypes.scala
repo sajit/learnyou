@@ -98,5 +98,9 @@ object MonoidTypes {
     val zero = (A.zero,B.zero)
   }
   
+  def functionMonoid[A,B](B:Monoid[B]):Monoid[A => B] = new Monoid[A => B] {
+    def op(f1:(A=>B),f2:(A=>B)):(A=>B) = a => B.op(f1(a),f2(a))  
+    val zero: A => B = _ => B.zero
+  }
   
 }
