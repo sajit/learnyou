@@ -8,11 +8,13 @@ case class Gen[A](sample: State[RNG, A]) {
   
   /**
    * Sample is Type State[S,A]
+   * State[S,A] class has a maethod flatMap which takes a function f: A => State[S,B]
    * sample.flatMap is { State [S,A] => State[S,B]}
-   * f(a) = Gen[B]
-   * f(a).sample = State [S,B]
+   * Type of f(a) is  Gen[B]
+   * Type of f(a).sample is State [S,B]
    */
   def flatMap[B](f:A=>Gen[B]):Gen[B] = Gen(sample.flatMap(a => f(a).sample))
+ 
 
   def unsized: SGen[A] = SGen(x => this)
 
