@@ -150,4 +150,13 @@ class JphmSpec extends BaseSpec {
     intStream.head should be (4)
   }
   
+  it should "generate a list of 5" in {
+    val run:RNG => (Int,RNG)  = {rng => (3,rng)}
+    val state = State(run)
+    val g1 = Gen(state)
+    val resultGen:Gen[List[Int]] = g1.listOfN(Gen.unit(5))
+    val list:List[Int] = resultGen.sample.run.apply(simpleRng)._1
+    list should be (List(3,3,3,3,3))
+  }
+  
 }
