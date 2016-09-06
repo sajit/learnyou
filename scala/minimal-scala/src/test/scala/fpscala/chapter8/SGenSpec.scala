@@ -24,4 +24,15 @@ class SGenSpec  extends BaseSpec{
     val (result, aRng) = aGen.sample.run(simpleRng)
     result should be(5)
   }
+  
+  it should "invoke listOF" in {
+    val simpleRng = RNG.Simple(100)
+     def foo: (Int => Gen[Int]) = { x => Gen.unit(x) }
+     val sgen = SGen(foo)
+    val aGen: Gen[Int] = sgen(5)
+    val result = sgen.listOf(aGen)(10).sample.run(simpleRng)
+    
+    result._1.size should be (10)
+    
+  }
 }

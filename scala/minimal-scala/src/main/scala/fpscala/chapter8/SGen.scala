@@ -22,4 +22,8 @@ case class SGen[A](g: Int => Gen[A]) {
     })
 
   }
+  
+  def listOf[A](g:Gen[A]):SGen[List[A]] = SGen(size => {
+    g.listOfN(Gen.unit2(size))
+  })
 }
