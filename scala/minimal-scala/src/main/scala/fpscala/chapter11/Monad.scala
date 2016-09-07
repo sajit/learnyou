@@ -1,5 +1,6 @@
 package fpscala.chapter11
 import fpscala.chapter8.Gen
+import fpscala.chapter7.Par
 
 trait Monad[F[_]] extends Functor[F]{
   def unit[A](a: => A):F[A]
@@ -15,5 +16,20 @@ object MonadUtils {
   val genMonad = new Monad[Gen] {
     def unit[A](a: => A):Gen[A]  = Gen.unit(a)
     def flatMap[A,B](ma:Gen[A])(f: A => Gen[B]):Gen[B] = ma flatMap f 
+  }
+  
+  val optionMonad = new Monad[Option] {
+    def unit[A](a: => A):Option[A]  = Option(a)
+    def flatMap[A,B](ma:Option[A])(f: A => Option[B]):Option[B] = ma flatMap f 
+  }
+  
+  val streamMonad = new Monad[Stream] {
+    def unit[A](a: => A):Stream[A] = Stream(a)
+    def flatMap[A,B](ma:Stream[A])(f: A => Stream[B]):Stream[B] = ma flatMap f
+  }
+  
+  val listMonad = new Monad[List] {
+    def unit[A](a: => A):List[A] = List(a)
+    def flatMap[A,B] (ma:List[A])(f: A => List[B]):List[B] = ma flatMap f
   }
 }
