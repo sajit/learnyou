@@ -27,5 +27,5 @@ case class SGen[A](g: Int => Gen[A]) {
     g.listOfN(Gen.unit2(size))
   })
   
-  def listOf1[A]
+ 
 }
