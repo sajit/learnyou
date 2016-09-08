@@ -21,5 +21,11 @@ class MonadSpec extends BaseSpec{
      result.size should be (1)
      result should be (List(List(false,true)))
  }
+   
+   it should "replciate 3 times " in {
+     val result:List[List[Int]] = MonadUtils.listMonad.replicateM(3, List(1,4))
+     result.size should be (2)
+     result should be (List(List(1,1,1),List(4,4,4)))
+   }
   
 }
