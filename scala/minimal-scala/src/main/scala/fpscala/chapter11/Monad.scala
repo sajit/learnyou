@@ -14,7 +14,7 @@ trait Monad[F[_]] extends Functor[F]{
   def sequence[A](lma:List[F[A]]):F[List[A]] =  lma.foldRight(unit(List[A]()))((ma, mla) => map2(ma, mla)(_ :: _))
   
   def traverse[A,B](la:List[A])(f: A => F[B]):F[List[B]] = sequence(la.map { el => f(el) })
-  def traverse_correct[A,B](la:List[A])(f: A => F[B]):F[List[B]] = la.foldRight(unit(List[B]()))((a, mlb) => map2(f(a), mlb)(_ :: _))
+  def traverse_correct[A,B](la:List[A])(f: A => F[B]):F[List[B]] = la.foldRight(unit(List[B]()))((a, mlb) => map2(f(a), mlb)((b,lb) => b :: lb))
   
   /**
    * For `List`, the `replicateM` function will generate a list of lists. It will contain all the lists of length `n` with 
@@ -31,6 +31,8 @@ trait Monad[F[_]] extends Functor[F]{
    * 
    */
   def replicateM[A](n:Int,ma:F[A]):F[List[A]] = map(ma)(a => List.fill(n)(a))
+  
+  //def filterM[A](ms:List[A])(f: A => F[Boolean]):F[List[A]] = ms.foldRight(unit(List[A]()))((ma, mla) => map2(ma,mla)((a,la) => la ))
 }
 
 object MonadUtils {
