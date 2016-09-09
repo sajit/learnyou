@@ -27,5 +27,11 @@ class MonadSpec extends BaseSpec{
      result.size should be (2)
      result should be (List(List(1,1,1),List(4,4,4)))
    }
+   
+   it should "filter even monad lit " in {
+     
+    val result:List[List[Int]] =  MonadUtils.listMonad.filterM(List(1,3,2))((a => MonadUtils.listMonad.unit(a %2 ==0)))
+    result should be (List(List(2)))
+   }
   
 }

@@ -32,7 +32,9 @@ trait Monad[F[_]] extends Functor[F]{
    */
   def replicateM[A](n:Int,ma:F[A]):F[List[A]] = map(ma)(a => List.fill(n)(a))
   
-  //def filterM[A](ms:List[A])(f: A => F[Boolean]):F[List[A]] = ms.foldRight(unit(List[A]()))((ma, mla) => map2(ma,mla)((a,la) => la ))
+  def filterM[A](ms:List[A])(f: A => F[Boolean]):F[List[A]] = ms.foldRight(unit(List[A]()))((a, mla) => {
+    map2(f(a),mla)((bool,la) => if(bool) { a :: la} else {la})
+  })
 }
 
 object MonadUtils {
