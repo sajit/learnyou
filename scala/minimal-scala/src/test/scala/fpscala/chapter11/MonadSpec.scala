@@ -33,5 +33,15 @@ class MonadSpec extends BaseSpec{
     val result:List[List[Int]] =  MonadUtils.listMonad.filterM(List(1,3,2))((a => MonadUtils.listMonad.unit(a %2 ==0)))
     result should be (List(List(2)))
    }
+   
+   it should "be a klieisli composition " in {
+     val listMonad = MonadUtils.listMonad;
+     val f:(Int => List[Int]) = { x => List(x) }
+     val g:(Int => List[Int] ) = {x => List.fill(2)(x) }
+     val h:(Int => List[Int]) = { x => List() }
+     val lhs = listMonad.compose(listMonad.compose(f, g), h)
+     val rhs = listMonad.compose(f, listMonad.compose(g, h))
+     lhs(0) should be (rhs(0))
+   }
   
 }
