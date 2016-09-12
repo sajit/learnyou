@@ -12,4 +12,9 @@ trait Applicative[F[_]] extends Functor[F] {
   
   def traverse[A,B](as:List[A])(f:A => F[B]):F[List[B]] = 
     as.foldRight(unit(List[B]()))((a,fbs) => map2(f(a),fbs)((a,bs) => a :: bs))
+    
+  def sequence[A](fas:List[F[A]]):F[List[A]] = fas.foldRight(unit(List[A]()))((fa,acc) => map2(fa,acc)((a,alist) => a :: alist))
+  def replicateM[A](n:Int,fa:F[A]):F[List[A]] = sequence(List.fill(n)(fa))
+   
+  def product[A,B](fa:F[A],fb:F[B]):F[(A,B)] = map2(fa,fb)((a,b) => (a,b))
 }
