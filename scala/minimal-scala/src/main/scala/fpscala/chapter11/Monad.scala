@@ -2,6 +2,11 @@ package fpscala.chapter11
 import fpscala.chapter8.Gen
 import fpscala.chapter7.Par
 
+case class Id[A](value:A){
+  def map[B](f: (A => B)): Id[B] = Id(f(value))
+  def flatMap[B](f: A => Id[B]): Id[B] = f(value)
+}
+
 trait Monad[F[_]] extends Functor[F]{
   def unit[A](a: => A):F[A]
   def flatMap[A,B](ma:F[A])(f: A => F[B]):F[B]
@@ -63,4 +68,10 @@ object MonadUtils {
     def unit[A](a: => A):List[A] = List(a)
     def flatMap[A,B] (ma:List[A])(f: A => List[B]):List[B] = ma flatMap f
   }
+  
+  val idMonad = new Monad[Id] {
+    def unit[A](a: => A):Id[A] = Id(a)
+    def flatMap[A,B](ma:Id[A])(f: A => Id[B]):Id[B] = ma flatMap f
+  }
 }
+
