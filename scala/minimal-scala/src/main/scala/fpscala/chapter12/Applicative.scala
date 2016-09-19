@@ -40,10 +40,26 @@ trait Applicative[F[_]] extends Functor[F] {
   def map4[A,B,C,D,E](fa:F[A],fb:F[B],fc:F[C],fd:F[D])(f:(A,B,C,D) => E):F[E] = apply(apply(apply(apply(unit(f.curried))(fa))(fb))(fc))(fd)
 }
 
+sealed trait Validation[+E,+A]
+
+case class Failure[E](head:E,tail:Vector[E] = Vector()) extends Validation[E,Nothing] 
+
+case class Success[A](a:A) extends Validation[Nothing,A]
+
+
+
 object Applicative {
   
   val listApplicative = new Applicative[List] {
     def unit[A](a: => A):List[A] = List(a)
     def map2[A,B,C](fa:List[A],fb:List[B])(f:(A,B) => C):List[C] = fa zip fb map (tuple => f(tuple._1,tuple._2))
+  }
+  
+
+  
+  def validationApplicative[E]: Applicative[({type f[x] = Validation[E,x]})#f] =
+  new Applicative[({type f[x] = Validation[E,x]})#f] {
+    def unit[A](a: => A) = Success(a)
+    override def map2[A,B,C](fa: Validation[E,A], fb: Validation[E,B])(f: (A, B) => C) = ???
   }
 }
