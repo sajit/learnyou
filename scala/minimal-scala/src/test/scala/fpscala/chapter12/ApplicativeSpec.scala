@@ -1,6 +1,7 @@
 package fpscala.chapter12
 
 import fpscala.BaseSpec
+import java.text.SimpleDateFormat
 
 class ApplicativeSpec extends BaseSpec{
   
@@ -16,5 +17,16 @@ class ApplicativeSpec extends BaseSpec{
     val fa = List(0,5)
     val result = applicative.apply(fab)(fa)
     result should be (List(1,1))
+  }
+  
+  it should "validate a webform" in {
+    val result = Applicative.validWebForm("hello", "2000-11-04", "1234567890")
+    val date = new SimpleDateFormat("yyyy-MM-dd").parse("2000-11-04")
+    result should be (Success(WebForm("hello", date, "1234567890")))
+    Applicative.validWebForm("", "2004/11/44", "1333") match {
+      case Failure(h,t) => t.size should be (2)
+      case _ => fail()
+    }
+    
   }
 }

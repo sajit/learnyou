@@ -83,7 +83,10 @@ object Applicative {
         case _:Throwable => Failure("Bad date format")
       }
      
-    def validatePhone(phone:String):Validation[String,String] = 
+    def validPhone(phone:String):Validation[String,String] = 
       if(phone.length()==10)Success(phone) else Failure("wrong format")
+      
+    def validWebForm(name:String,bday:String,phone:String):Validation[String,WebForm] = 
+      validationApplicative.map3(validName(name),validBirthDate(bday),validPhone(phone))(WebForm(_,_,_))
     
 }
