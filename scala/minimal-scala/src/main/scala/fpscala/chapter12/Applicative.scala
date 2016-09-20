@@ -39,6 +39,16 @@ trait Applicative[F[_]] extends Functor[F] {
   def map3[A,B,C,D](fa:F[A],fb:F[B],fc:F[C])(f:(A,B,C) => D):F[D] = apply(apply(apply(unit(f.curried))(fa))(fb))(fc)
   
   def map4[A,B,C,D,E](fa:F[A],fb:F[B],fc:F[C],fd:F[D])(f:(A,B,C,D) => E):F[E] = apply(apply(apply(apply(unit(f.curried))(fa))(fb))(fc))(fd)
+  
+   def product[G[_]](G:Applicative[G]):Applicative[({type f[x] = (F[x],G[x])})#f] = {
+      val self = this
+        new Applicative[({type f[x] = (F[x], G[x])})#f] {
+                  def unit[A](a: => A) = (self.unit(a), G.unit(a))
+                  def map2[A, B, C](fa: (F[A], G[A]), fb: (F[B], G[B]))(fn: (A, B) => C):(F[C], G[C]) = (self.map2(fa._1, fb._1)(fn),G.map2(fa._2,fb._2)(fn))
+                  override def apply[A,B](fs: (F[A => B], G[A => B]))(p: (F[A], G[A])) =
+                              (self.apply(fs._1)(p._1), G.apply(fs._2)(p._2))
+      }
+  }
 }
 
 sealed trait Validation[+E,+A]
@@ -96,5 +106,7 @@ object Applicative {
       
     def validWebForm(name:String,bday:String,phone:String):Validation[String,WebForm] = 
       validationApplicative.map3(validName(name),validBirthDate(bday),validPhone(phone))(WebForm(_,_,_))
+    
+      
     
 }
