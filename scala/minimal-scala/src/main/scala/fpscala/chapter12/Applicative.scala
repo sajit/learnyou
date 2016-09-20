@@ -1,6 +1,7 @@
 package fpscala.chapter12
 
 import fpscala.chapter11.Functor
+import java.util.Date
 
 trait Applicative[F[_]] extends Functor[F] {
   //primitive combinators
@@ -47,6 +48,7 @@ case class Failure[E](head:E,tail:Vector[E] = Vector()) extends Validation[E,Not
 case class Success[A](a:A) extends Validation[Nothing,A]
 
 
+case class WebForm(name:String,birthdate:Date,phoneNumber:String)
 
 object Applicative {
   
@@ -67,4 +69,21 @@ object Applicative {
       case (Failure(ha,ta),Failure(hb,tb)) => Failure(ha,ta ++ Vector(hb) ++ tb)
     }
   }
+  
+  def validName(name:String):Validation[String,String] = 
+    if(name == null || name.isEmpty()) Failure("Name cannot be empty") else Success(name)
+    
+  def validBirthDate(birthDate:String):Validation[String,Date] = 
+      try{
+      import java.text._
+      val date:Date = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate)
+      Success(date)
+      }
+      catch {
+        case _:Throwable => Failure("Bad date format")
+      }
+     
+    def validatePhone(phone:String):Validation[String,String] = 
+      if(phone.length()==10)Success(phone) else Failure("wrong format")
+    
 }
