@@ -29,4 +29,18 @@ class ApplicativeSpec extends BaseSpec{
     }
     
   }
+  
+  it should "applicative identiies.part1" in {
+    Applicative.optionApplicative.map(Some(3))(x => x) should be (Some(3))
+    
+  }
+  
+  it should "applicative identity.part2" in {
+    val g:(Int => Int) = {x => x + 1}
+    val f:(Int => Int) = {x => x*2}
+    val v = Some(4)
+    val lhs = Applicative.optionApplicative.map(Applicative.optionApplicative.map(v)(g))(f)
+    val rhs = Applicative.optionApplicative.map(v)(f compose g)
+    lhs should be (rhs)
+  }
 }

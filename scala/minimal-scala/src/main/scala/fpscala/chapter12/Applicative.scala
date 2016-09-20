@@ -57,6 +57,14 @@ object Applicative {
     def map2[A,B,C](fa:List[A],fb:List[B])(f:(A,B) => C):List[C] = fa zip fb map (tuple => f(tuple._1,tuple._2))
   }
   
+  val optionApplicative = new Applicative[Option] {
+    def unit[A](a: => A):Option[A] = Some(a)
+    def map2[A,B,C](fa:Option[A],fb:Option[B])(f:(A,B) => C):Option[C] = (fa,fb) match {
+      case (Some(a),Some(b)) => Some(f(a,b))
+      case _ => None 
+    }
+  }
+  
 
   
   def validationApplicative[E]: Applicative[({type f[x] = Validation[E,x]})#f] =
