@@ -43,4 +43,6 @@ class ApplicativeSpec extends BaseSpec{
     val rhs = Applicative.optionApplicative.map(v)(f compose g)
     lhs should be (rhs)
   }
+  
+
 }
