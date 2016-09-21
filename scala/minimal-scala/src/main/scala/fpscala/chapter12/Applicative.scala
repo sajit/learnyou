@@ -57,6 +57,8 @@ trait Applicative[F[_]] extends Functor[F] {
       def map2[A,B,C](fga:F[G[A]],fgb:F[G[B]])(fn:(A,B) => C):F[G[C]] = self.map2(fga, fgb)((ga,gb) => G.map2(ga, gb)((a,b) => fn(a,b)))
     }
   }
+  
+  def sequenceMap[K,V](ofa:Map[K,F[V]]):F[Map[K,V]] = ofa.foldRight(this.unit(Map[K,V]()))((el,facc) => map2(el._2,facc)((v,acc) => acc + (el._1 -> v)))
 }
 
 sealed trait Validation[+E,+A]
