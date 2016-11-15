@@ -50,3 +50,31 @@ object STRef {
     var cell = a
   })
 }
+
+sealed abstract class STArray[S,A](implicit manifest:Manifest[A]) {
+  protected def value:Array[A]
+  def size: ST[S,Int] = ST(value.size)
+
+  def write(i:Int,a:A):ST[S,Unit] = new ST[S,Unit] {
+    def run(s:S) = {
+      value(i) = a
+      ((),s)
+    }
+  }
+
+  /**
+    * Read value at ith index
+    * @param i
+    * @return
+    */
+  def read(i:Int):ST[S,A] = ST(value(i))
+
+  /**
+    * Turn array into an immutable list
+    * @return
+    */
+  def freeze: ST[S,List[A]] = ST(value.toList)
+
+
+}
+
