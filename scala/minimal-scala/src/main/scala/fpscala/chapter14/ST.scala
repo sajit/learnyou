@@ -75,11 +75,18 @@ sealed abstract class STArray[S,A](implicit manifest:Manifest[A]) {
     */
   def freeze: ST[S,List[A]] = ST(value.toList)
 
-
+  /**
+    * from solutions
+    */
+  def fill(xs:Map[Int,A]):ST[S,Unit] = xs.foldRight(ST[S,Unit](())) {case((i,v),st) =>  st flatMap (_ => write(i,v)) }
 }
 object STArray {
   def apply[S,A:Manifest](sz:Int,v:A):ST[S,STArray[S,A]] =
     ST(new STArray[S,A]() {
       val value = Array.fill(sz)(v)
     })
+
+  def fromList[S,A:Manifest](xs:List[A]):ST[S,STArray[S,A]] = ST(new STArray[S,A]() {
+    val value = xs.toArray
+  })
 }
