@@ -6,7 +6,7 @@ package fpscala.chapter14
 object SMUtils {
 
   val st:ST[String,Int] = ST(5)
-  val (s,x) = st.map((el => el + 1))
+  val stx:ST[String,Int] = st.map((el => el + 1))
 
 
 }

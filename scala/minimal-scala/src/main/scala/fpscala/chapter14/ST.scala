@@ -25,6 +25,8 @@ sealed trait ST[S,A] { self =>
     }
   }
 
+
+
 }
 object ST {
   def apply[S,A](a: => A) = {
@@ -44,6 +46,8 @@ sealed trait STRef[S,A] {
       ((),s)
     }
   }
+
+
 }
 object STRef {
   def apply[S,A](a:A):ST[S,STRef[S,A]] = ST(new STRef[S,A] {
@@ -52,33 +56,39 @@ object STRef {
 }
 
 sealed abstract class STArray[S,A](implicit manifest:Manifest[A]) {
-  protected def value:Array[A]
+
+
+
+  protected def value: Array[A]
   def size: ST[S,Int] = ST(value.size)
 
-  def write(i:Int,a:A):ST[S,Unit] = new ST[S,Unit] {
-    def run(s:S) = {
+  // Write a value at the give index of the array
+  def write(i: Int, a: A): ST[S,Unit] = new ST[S,Unit] {
+    def run(s: S) = {
       value(i) = a
-      ((),s)
+      ((), s)
     }
   }
 
-  /**
-    * Read value at ith index
-    * @param i
-    * @return
-    */
-  def read(i:Int):ST[S,A] = ST(value(i))
+  // Read the value at the given index of the array
+  def read(i: Int): ST[S,A] = ST(value(i))
 
-  /**
-    * Turn array into an immutable list
-    * @return
-    */
+  // Turn the array into an immutable list
   def freeze: ST[S,List[A]] = ST(value.toList)
 
-  /**
-    * from solutions
-    */
-  def fill(xs:Map[Int,A]):ST[S,Unit] = xs.foldRight(ST[S,Unit](())) {case((i,v),st) =>  st flatMap (_ => write(i,v)) }
+  def fill(xs: Map[Int,A]): ST[S,Unit] =
+    xs.foldRight(ST[S,Unit](())) {
+      case ((k, v), st) => st flatMap (_ => write(k, v))
+    }
+
+  def swap(i: Int, j: Int): ST[S,Unit] = for {
+    x <- read(i)
+    y <- read(j)
+    _ <- write(i, y)
+    _ <- write(j, x)
+  } yield ()
+
+
 }
 object STArray {
   def apply[S,A:Manifest](sz:Int,v:A):ST[S,STArray[S,A]] =
@@ -89,4 +99,6 @@ object STArray {
   def fromList[S,A:Manifest](xs:List[A]):ST[S,STArray[S,A]] = ST(new STArray[S,A]() {
     val value = xs.toArray
   })
+
+
 }
