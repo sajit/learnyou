@@ -12,4 +12,28 @@ class ProcessSpec extends BaseSpec{
     r.toList should be (List(4.1,11.0,12.0))
   }
 
+  it should "take 4 values" in {
+    val r = Process.take(4)(Stream(2,4,6,1,6,3))
+    r.toList should be (List(2,4,6,1))
+  }
+
+  it should "drop 4 values " in {
+    val r = Process.drop(4)(Stream(2,4,6,1,6,3))
+    r.toList should be(List(6,3))
+  }
+
+  it should "takeWhile even " in {
+    val f:(Int => Boolean) = (x => x%2 == 0)
+    val r = Process.takeWhile(f)(Stream(2,4,6,1,6,3))
+    r.toList should be(List(2,4,6))
+  }
+
+  it should "dropWhile even" in {
+    val f:(Int => Boolean) = (x => x%2 == 0)
+    val r = Process.dropWhile(f)(Stream(2,4,6,1,6,3))
+    r.toList should be(List(1,6,3))
+    val r2 = Process.dropWhile(f)(Stream(1,2,4,6,1,6,3))
+    r2.toList should be (List(1,2,4,6,1,6,3))
+  }
+
 }
