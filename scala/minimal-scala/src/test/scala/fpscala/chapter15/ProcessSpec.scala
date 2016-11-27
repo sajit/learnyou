@@ -36,4 +36,8 @@ class ProcessSpec extends BaseSpec{
     r2.toList should be (List(1,2,4,6,1,6,3))
   }
 
+  it should "count " in {
+    Process.count(Stream("a","b","c")) should be (Stream(1,2,3))
+  }
+
 }

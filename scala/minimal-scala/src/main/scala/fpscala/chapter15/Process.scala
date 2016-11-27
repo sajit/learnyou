@@ -97,4 +97,12 @@ object  Process {
     go(n)
   }
 
+  def count[I]:Process[I,Int] = {
+    def go(count:Int):Process[I,Int] = Await {
+      case Some(i) => Emit(count,go(count + 1))
+      case None => Halt()
+    }
+    go(1)
+  }
+
 }
