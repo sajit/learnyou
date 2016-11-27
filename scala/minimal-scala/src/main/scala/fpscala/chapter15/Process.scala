@@ -13,6 +13,24 @@ sealed trait Process[I,O]{
     }
   }
 
+  /**
+    * compose..
+    * copied from https://github.com/fpinscala/fpinscala/blob/master/answerkey/streamingio/05.answer.scala
+    * @param p2
+    * @tparam O2
+    * @return
+    */
+  def |>[O2](p2:Process[O,O2]):Process[I,O2] = {
+    p2 match {
+      case Halt() => Halt()
+      case Emit(h, t) => Emit(h, this |> t)
+      case Await(f) => this match {
+        case Emit(h, t) => t |> f(Some(h))
+        case Halt() => Halt() |> f(None)
+        case Await(g) =>  Await((i: Option[I]) => g(i) |> p2)
+      }
+    }
+  }
 
 }
 

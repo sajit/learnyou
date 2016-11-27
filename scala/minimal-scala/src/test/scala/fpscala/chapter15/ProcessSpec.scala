@@ -50,4 +50,12 @@ class ProcessSpec extends BaseSpec{
     Process.mean(Stream(4)) should be (Stream(4.0))
   }
 
+  it should "compose two processes" in {
+    val p1 = Process.count[Int]
+    val f:(Int => Boolean) = {x => x <2}
+    val p2 = Process.takeWhile(f)
+    val result:Stream[Int] = p1.|>(p2)(Stream(4,5,6,9))
+    result.toList should be (List(1))
+  }
+
 }
