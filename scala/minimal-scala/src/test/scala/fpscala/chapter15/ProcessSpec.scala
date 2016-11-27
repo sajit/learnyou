@@ -40,4 +40,14 @@ class ProcessSpec extends BaseSpec{
     Process.count(Stream("a","b","c")) should be (Stream(1,2,3))
   }
 
+  it should "maintain running average 1 " in {
+    Process.mean(Stream()) should be (Stream())
+  }
+
+
+  it should "maintain running average 2 " in {
+    Process.mean(Stream(4,-5,10)) should be (Stream(4.0,-0.5,3.0))
+    Process.mean(Stream(4)) should be (Stream(4.0))
+  }
+
 }

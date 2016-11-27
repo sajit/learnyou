@@ -105,4 +105,12 @@ object  Process {
     go(1)
   }
 
+  def mean:Process[Double,Double] = {
+    def go(sum:Double,n:Int):Process[Double,Double] = Await {
+      case Some(d) => Emit((d + sum)/(n + 1),go(d + sum,n + 1))
+      case None => Halt()
+    }
+    go(0.0,0)
+  }
+
 }
