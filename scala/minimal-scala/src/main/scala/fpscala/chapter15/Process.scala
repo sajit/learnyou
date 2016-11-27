@@ -12,6 +12,8 @@ sealed trait Process[I,O]{
       case xs => recv(None)(xs)
     }
   }
+
+
 }
 
 case class Emit[I,O](head:O,tail:Process[I,O] = Halt[I,O]()) extends Process[I,O]
@@ -112,5 +114,7 @@ object  Process {
     }
     go(0.0,0)
   }
+
+
 
 }
