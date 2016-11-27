@@ -133,6 +133,12 @@ object  Process {
     go(0.0,0)
   }
 
-
+  def exists[I](f:I => Boolean):Process[I,Boolean] =  {
+    def go():Process[I,Boolean] = Await {
+      case Some(i) => if(f(i)){ Emit(true,Halt())} else { go()}
+      case None => Emit(false,Halt())
+    }
+    go()
+  }
 
 }

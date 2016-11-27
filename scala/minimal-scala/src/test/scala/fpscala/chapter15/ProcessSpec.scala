@@ -58,4 +58,14 @@ class ProcessSpec extends BaseSpec{
     result.toList should be (List(1))
   }
 
+  it should "check if not exists " in {
+    val f:(Int => Boolean) = {x => x > 10}
+    Process.exists(f)(Stream(1,5,6,9)).map(result =>  result should be (false))
+  }
+
+  it should "check if exists " in {
+    val f:(Int => Boolean) = {x => x %2 == 0}
+    Process.exists(f)(Stream(1,5,6,9)).map(result =>  result should be (true))
+  }
+
 }
