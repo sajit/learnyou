@@ -43,4 +43,21 @@ class HelloSpec extends FlatSpec with Matchers {
     Samples.isSorted2(List(3,4,1,10),(x:Int,y:Int) => (x<=y)) should be (false)
 
   }
+
+  def zipWithIndex[I](z: List[I]):List[(I,Int)] = {
+    def go(rem:List[I],acc:List[(I,Int)]):List[(I,Int)] = {
+      if(rem.isEmpty){
+        acc.reverse
+      }
+      else{
+        go(rem.tail,(rem.head,acc.length+1) :: acc)
+      }
+    }
+    go(z,List[(I,Int)]())
+  }
+
+  "zip with index" should "zipandcount" in {
+    val z = List("hello","world","ds")
+    zipWithIndex(z) should be (List(("hello",1),("world",2),("ds",3)))
+  }
 }
