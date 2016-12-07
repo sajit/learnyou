@@ -7,3 +7,10 @@ case class Location(input: String, offset: Int = 0) {
   }
 
 }
+
+case class ParseError(stack:List[(Location,String)]) {
+  def push(location:Location,message:String):ParseError = ParseError((location,message) :: stack)
+
+
+  def label[A](s:String):ParseError = ParseError((stack.lastOption map (_._1)).map((_,s)).toList)
+}
