@@ -36,7 +36,7 @@ object Utils{
 
   def string(w: String): Parser[String] = { location =>
      val msg = "Not match"
-     if(location.input.equals(w)){
+     if(location.input.startsWith(w)){
        Success(w,w.length)
      }
      else {
