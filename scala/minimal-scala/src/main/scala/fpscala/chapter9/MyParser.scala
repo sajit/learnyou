@@ -33,6 +33,17 @@ case class Failure(get:ParseError) extends Result[Nothing]
 /** A parser is a kind of state action that can fail. */
 object Utils{
   type Parser[+A] = Location => Result[A]
+
+  def string(w: String): Parser[String] = { location =>
+     val msg = "Not match"
+     if(location.input.equals(w)){
+       Success(w,w.length)
+     }
+     else {
+       Failure(ParseError(List((location,msg))))
+     }
+
+  }
 }
 
 

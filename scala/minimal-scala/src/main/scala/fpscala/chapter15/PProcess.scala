@@ -12,7 +12,7 @@ object PProcess {
     * @tparam O
     */
   case class Await[F[_],A,O](
-                            req:F[A],recv:Either[Throwable,A] => Process[F,O]
+                            req:F[A],recv:Either[Throwable,A] => Process[F[A],O]
                             ) extends PProcess[F,O]
 
   case class Emit[F[_],O](head:O,tail:PProcess[F,O]) extends PProcess[F,O]
