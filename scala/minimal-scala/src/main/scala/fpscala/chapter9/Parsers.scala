@@ -14,3 +14,21 @@ case class ParseError(stack:List[(Location,String)]) {
 
   def label[A](s:String):ParseError = ParseError((stack.lastOption map (_._1)).map((_,s)).toList)
 }
+
+trait Parsers[Parser[+_]] {
+
+  def run[A](p:Parser[A])(input:String):Either[ParseError,A]
+
+  def string(s:String):Parser[String]
+
+  def flatMap[A,B](p: Parser[A])(f: A => Parser[B]): Parser[B]
+
+  def succeed[A](a: A): Parser[A]
+
+
+  def map[A,B](a: Parser[A])(f: A => B): Parser[B] = flatMap(a)(f andThen succeed)
+  def char(c:Char):Parser[Char] = map(string(c.toString))(_.charAt(0))
+
+
+
+}
