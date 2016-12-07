@@ -1,3 +1,5 @@
+import scala.util.matching.Regex
+
 case class Location(input: String, offset: Int = 0) {
 
   lazy val line = input.slice(0,offset+1).count(_ == '\n') + 1
@@ -29,6 +31,9 @@ trait Parsers[Parser[+_]] {
   def map[A,B](a: Parser[A])(f: A => B): Parser[B] = flatMap(a)(f andThen succeed)
   def char(c:Char):Parser[Char] = map(string(c.toString))(_.charAt(0))
 
+  def regex[A](r:Regex):Parser[String]
+
+  def slice[A](p:Parser[A]):Parser[String]
 
 
 }
