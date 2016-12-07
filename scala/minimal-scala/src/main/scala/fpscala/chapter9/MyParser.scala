@@ -1,6 +1,6 @@
 package fpscala.chapter9
 
-
+import scala.util.matching.Regex
 
 
 case class Location(input: String, offset: Int = 0) {
@@ -43,6 +43,25 @@ object Utils{
        Failure(ParseError(List((location,msg))))
      }
 
+  }
+
+  def succeed[A](a: A): Parser[A] = {loc => Success(a,0)}
+
+  def slice[A](p: Parser[A]): Parser[String] = {
+    loc => p(loc) match {
+      case Success(_,n) => Success(loc.input.substring(0,n),n)
+      case Failure(f) => Failure(f)
+    }
+  }
+
+
+  def regex(r: Regex): Parser[String] = {
+    val msg = "regex " + r
+    loc =>
+      r.findPrefixOf(loc.input) match {
+        case None => Failure(ParseError(List((loc,msg))))
+        case Some(m) => Success(m,m.length)
+      }
   }
 }
 
