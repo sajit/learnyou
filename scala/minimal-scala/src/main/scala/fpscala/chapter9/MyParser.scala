@@ -14,13 +14,18 @@ case class Location(input: String, offset: Int = 0) {
 }
 
 case class ParseError(stack:List[(Location,String)]) {
-  def push(location:Location,message:String):ParseError = ParseError((location,message) :: stack)
+  def push(location:Location,message:String):ParseError = copy(stack = (location,message) :: stack)
 
 
   def label[A](s:String):ParseError = ParseError((stack.lastOption map (_._1)).map((_,s)).toList)
 }
 
 sealed trait Result[+A]{
+
+  def mapError(f: ParseError => ParseError): Result[A] = this match {
+    case Failure(e) => Failure(f(e))
+    case _ => this
+  }
 
   def extract: Either[ParseError,A] = this match {
     case Failure(e) => Left(e)
@@ -63,6 +68,11 @@ object Utils{
         case Some(m) => Success(m,m.length)
       }
   }
+
+
+  def scope[A](msg:String)(p:Parser[A]):Parser[A] = location => p(location).mapError(_.push(location,msg))
+
+  def label[A](msg:String)(p:Parser[A]):Parser[A] = location => p(location).mapError(_.label(msg))
 }
 
 
